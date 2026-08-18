@@ -99,7 +99,7 @@ else
     config_h.set_quoted('APPLICATION_ID', 'io.github.kolunmi.Bazaar')
     config_h.set_quoted('LOCALEDIR', get_option('prefix') / get_option('localedir'))
     config_h.set_quoted('DONATE_LINK', 'https://ko-fi.com/kolunmi')
-    config_h.set_quoted('RELEASE_PAGE', run_command('version.sh', 'get-gh-release').stdout().strip())
+    config_h.set_quoted('RELEASE_PAGE', run_command('version.sh', 'get-gitlab-release').stdout().strip())
 
     bazaar_bin_name = 'bazaar'
     config_h.set_quoted('BAZAAR_BIN_NAME', bazaar_bin_name)

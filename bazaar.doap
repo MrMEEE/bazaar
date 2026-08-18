@@ -13,8 +13,8 @@
   </description>
 
   <homepage rdf:resource="https://usebazaar.org" />
-  <download-page rdf:resource="https://github.com/bazaar-org/bazaar/releases" />
-  <bug-database rdf:resource="https://github.com/bazaar-org/bazaar/issues" />
+  <download-page rdf:resource="https://gitlab.gnome.org/World/bazaar/-/releases" />
+  <bug-database rdf:resource="https://gitlab.gnome.org/World/bazaar/-/work_items" />
 
   <programming-language>C</programming-language>
 
