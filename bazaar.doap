@@ -41,6 +41,7 @@
     <foaf:Person>
       <foaf:name>Alexander Vanhee</foaf:name>
       <gnome:userid>Alexander.Vanhee</gnome:userid>
+      <foaf:mbox rdf:resource="alexanderv@gnome.org" />
       <foaf:account>
         <foaf:OnlineAccount>
           <foaf:accountServiceHomepage rdf:resource="https://github.com" />
