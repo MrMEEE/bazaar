@@ -243,8 +243,8 @@ tile_activated_cb (BzListTile *tile)
   if (group == NULL)
     return;
 
-  gtk_widget_activate_action (GTK_WIDGET (self), "window.show-group", "s",
-                              bz_entry_group_get_id (group));
+  gtk_widget_activate_action (GTK_WIDGET (self), "window.show-group", "(sb)",
+                              bz_entry_group_get_id (group), TRUE);
 }
 
 static void

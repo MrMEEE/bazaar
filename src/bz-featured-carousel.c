@@ -227,8 +227,8 @@ tile_clicked_cb (BzFeaturedTile *tile,
 {
   BzEntryGroup *group = NULL;
   group               = bz_featured_tile_get_group (tile);
-  gtk_widget_activate_action (GTK_WIDGET (user_data), "window.show-group", "s",
-                              bz_entry_group_get_id (group));
+  gtk_widget_activate_action (GTK_WIDGET (user_data), "window.show-group", "(sb)",
+                              bz_entry_group_get_id (group), TRUE);
 }
 
 static gboolean

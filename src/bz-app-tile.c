@@ -286,7 +286,7 @@ bz_app_tile_set_group (BzAppTile    *self,
 
   if (group != NULL)
     {
-      gtk_actionable_set_action_target (GTK_ACTIONABLE (self), "s", bz_entry_group_get_id (group));
+      gtk_actionable_set_action_target (GTK_ACTIONABLE (self), "(sb)", bz_entry_group_get_id (group), TRUE);
       gtk_actionable_set_action_name (GTK_ACTIONABLE (self), "window.show-group");
     }
   else
