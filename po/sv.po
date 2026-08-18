@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bazaar main\n"
 "Report-Msgid-Bugs-To: https://github.com/bazaar-org/bazaar/issues\n"
-"POT-Creation-Date: 2026-08-10 09:14+0000\n"
-"PO-Revision-Date: 2026-08-10 14:28+0200\n"
+"POT-Creation-Date: 2026-08-16 10:25+0000\n"
+"PO-Revision-Date: 2026-08-18 14:43+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -19,8 +19,8 @@ msgstr ""
 "X-Generator: Poedit 3.9\n"
 
 #: data/io.github.kolunmi.Bazaar.desktop.in:2
-#: data/io.github.kolunmi.Bazaar.metainfo.xml.in:7 src/bz-window.blp:47
-#: src/bz-window.blp:203 src/bz-window.c:387 src/bz-window.c:388
+#: data/io.github.kolunmi.Bazaar.metainfo.xml.in:7 src/bz-window.blp:54
+#: src/bz-window.blp:210 src/bz-window.c:392 src/bz-window.c:393
 msgid "Bazaar"
 msgstr "Bazaar"
 
@@ -68,28 +68,27 @@ msgstr "Logga in med Flathub för att visa och hantera favoriter"
 msgid "Search apps directly from GNOME Shell"
 msgstr "Sök program direkt från GNOME Shell"
 
-#: data/io.github.kolunmi.Bazaar.metainfo.xml.in:30 src/bz-application.c:771
+#: data/io.github.kolunmi.Bazaar.metainfo.xml.in:32 src/bz-application.c:750
 msgid "The Bazaar Contributors"
 msgstr "Bidragsgivarna till Bazaar"
 
-#: data/io.github.kolunmi.Bazaar.metainfo.xml.in:55
+#: data/io.github.kolunmi.Bazaar.metainfo.xml.in:57
 msgid "The home page displaying Flathub apps"
 msgstr "Startsidan som visar Flathub-program"
 
-# TODO: Translatornote om att det är ett namn på https://flathub.org/en/apps/io.github.nokse22.Exhibit
-#: data/io.github.kolunmi.Bazaar.metainfo.xml.in:59
-msgid "Exhibit app page"
+#: data/io.github.kolunmi.Bazaar.metainfo.xml.in:61
+msgid "App page for Exhibit"
 msgstr "Programsida för Exhibit"
 
-#: data/io.github.kolunmi.Bazaar.metainfo.xml.in:63
+#: data/io.github.kolunmi.Bazaar.metainfo.xml.in:65
 msgid "Library page"
 msgstr "Bibliotekssida"
 
-#: data/io.github.kolunmi.Bazaar.metainfo.xml.in:67
+#: data/io.github.kolunmi.Bazaar.metainfo.xml.in:69
 msgid "Search page"
 msgstr "Söksida"
 
-#: data/io.github.kolunmi.Bazaar.metainfo.xml.in:71
+#: data/io.github.kolunmi.Bazaar.metainfo.xml.in:73
 msgid "Category page"
 msgstr "Kategorisida"
 
@@ -155,11 +154,11 @@ msgstr ""
 msgid "Add-on for %s"
 msgstr "Tillägg för %s"
 
-#: src/bz-addons-dialog.c:360 src/bz-full-view.c:618
+#: src/bz-addons-dialog.c:360 src/bz-full-view.c:590
 msgid "Show Less"
 msgstr "Visa mindre"
 
-#: src/bz-addons-dialog.c:360 src/bz-full-view.c:618 src/bz-section-view.blp:72
+#: src/bz-addons-dialog.c:360 src/bz-full-view.c:590 src/bz-section-view.blp:72
 msgid "Show More"
 msgstr "Visa mer"
 
@@ -741,25 +740,25 @@ msgid "Installed"
 msgstr "Installerat"
 
 #. Translators: Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
-#: src/bz-application.c:774
+#: src/bz-application.c:753
 msgid "translator-credits"
 msgstr ""
 "Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Skicka synpunkter på översättningen till <tp-sv@listor.tp-sv.se>"
 
-#: src/bz-application.c:784
+#: src/bz-application.c:763
 msgid "Special Thanks"
 msgstr "Tack till"
 
-#: src/bz-application.c:842
+#: src/bz-application.c:821
 msgid "Logged Out Successfully!"
 msgstr "Loggade ut!"
 
-#: src/bz-application.c:1048
+#: src/bz-application.c:1028
 msgid "Ubuntu Troubles!"
 msgstr "Ubuntu-problem!"
 
-#: src/bz-application.c:1051
+#: src/bz-application.c:1031
 msgid ""
 "Ubuntu 25.10 and newer have messed up default security rules, making it "
 "<b>impossible to install apps</b> from the Flatpak version of Bazaar, please "
@@ -781,19 +780,19 @@ msgstr ""
 "\n"
 "<tt>flatpak uninstall io.github.kolunmi.Bazaar</tt>"
 
-#: src/bz-application.c:1057
+#: src/bz-application.c:1037
 msgid "Continue Anyway"
 msgstr "Fortsätt ändå"
 
-#: src/bz-application.c:1073
+#: src/bz-application.c:1053
 msgid "Performing setup…"
 msgstr "Genomför konfiguration…"
 
-#: src/bz-application.c:1172
+#: src/bz-application.c:1152
 msgid "Set Up System Flathub?"
 msgstr "Konfigurera systemets Flathub?"
 
-#: src/bz-application.c:1175
+#: src/bz-application.c:1155
 msgid ""
 "The system Flathub remote is not set up. Bazaar requires Flathub to be "
 "configured on the system Flatpak installation to browse and install "
@@ -808,11 +807,11 @@ msgstr ""
 "Du kan fortfarande använda Bazaar för att bläddra bland och ta bort redan "
 "installerade program."
 
-#: src/bz-application.c:1182
+#: src/bz-application.c:1162
 msgid "Set Up Flathub?"
 msgstr "Konfigurera Flathub?"
 
-#: src/bz-application.c:1185
+#: src/bz-application.c:1165
 msgid ""
 "Flathub is not set up on this system. You will not be able to browse and "
 "install applications in Bazaar if its unavailable.\n"
@@ -825,52 +824,52 @@ msgstr ""
 "Du kan fortfarande använda Bazaar för att bläddra bland och ta bort redan "
 "installerade program."
 
-#: src/bz-application.c:1191
+#: src/bz-application.c:1171
 msgid "Later"
 msgstr "Senare"
 
-#: src/bz-application.c:1192
+#: src/bz-application.c:1172
 msgid "Set Up Flathub"
 msgstr "Konfigurera Flathub"
 
-#: src/bz-application.c:1726
+#: src/bz-application.c:1703
 msgid "A backend error occurred"
 msgstr "Ett bakändesfel inträffade"
 
-#: src/bz-application.c:1934 src/bz-application.c:4205
+#: src/bz-application.c:1911 src/bz-application.c:4185
 msgid "Refreshing…"
 msgstr "Uppdaterar…"
 
-#: src/bz-application.c:2098
+#: src/bz-application.c:2070
 #, c-format
 msgid "Loading %d apps…"
 msgstr "Läser in %d program…"
 
-#: src/bz-application.c:2151 src/bz-application.c:2225
+#: src/bz-application.c:2123 src/bz-application.c:2197
 msgid "Failed to open file"
 msgstr "Misslyckades med att öppna fil"
 
-#: src/bz-application.c:2239
+#: src/bz-application.c:2211
 msgid "Failed to load metainfo"
 msgstr "Misslyckades med att läsa in metainfo"
 
-#: src/bz-application.c:2333
+#: src/bz-application.c:2305
 msgid "An initialization error occurred"
 msgstr "Ett initieringsfel inträffade"
 
-#: src/bz-application.c:2732
+#: src/bz-application.c:2701
 msgid "Checking for updates…"
 msgstr "Letar efter uppdateringar…"
 
-#: src/bz-application.c:2788
+#: src/bz-application.c:2757
 msgid "Failed to check for updates"
 msgstr "Misslyckades med att leta efter uppdateringar"
 
-#: src/bz-application.c:3976
+#: src/bz-application.c:3953
 msgid "Malformed Link"
 msgstr "Felformaterad länk"
 
-#: src/bz-application.c:3977
+#: src/bz-application.c:3954
 msgid ""
 "The link used to open this app has incorrect capitalization and may stop "
 "working in the future.\n"
@@ -882,18 +881,18 @@ msgstr ""
 "\n"
 "Detta orsakas troligen av att KRunner skickar felaktiga program-ID:n"
 
-#: src/bz-application.c:3985
+#: src/bz-application.c:3962
 msgid "Could not find app"
 msgstr "Kunde inte hitta program"
 
-#: src/bz-application.c:4202
+#: src/bz-application.c:4182
 #, c-format
 msgid "Loading %d app…"
 msgid_plural "Loading %d apps…"
 msgstr[0] "Läser in %d program…"
 msgstr[1] "Läser in %d program…"
 
-#: src/bz-application.c:4207
+#: src/bz-application.c:4187
 msgid "Writing to cache…"
 msgstr "Skriver till cache…"
 
@@ -941,7 +940,7 @@ msgstr "Installerades!"
 
 #. TRANSLATORS: Button to launch an installed app
 #: src/bz-bundle-install-dialog.blp:438 src/bz-bundle-install-dialog.blp:524
-#: src/bz-rich-app-tile.blp:199 src/bz-transaction-tile.blp:299
+#: src/bz-rich-app-tile.blp:199 src/bz-transaction-tile.blp:300
 msgid "Open"
 msgstr "Öppna"
 
@@ -1105,7 +1104,7 @@ msgstr "Detaljer"
 msgid "Copy"
 msgstr "Kopiera"
 
-#: src/bz-error-dialog.c:56 src/bz-screenshot-page.c:446 src/bz-share-list.c:364
+#: src/bz-error-dialog.c:56 src/bz-screenshot-page.c:461 src/bz-share-list.c:364
 msgid "Copied!"
 msgstr "Kopierad!"
 
@@ -1125,7 +1124,7 @@ msgstr "Logga in med Flathub för att hantera favoriter"
 msgid "Log In"
 msgstr "Logga in"
 
-#: src/bz-favorites-page.blp:5 src/bz-window.blp:348
+#: src/bz-favorites-page.blp:5 src/bz-window.blp:345
 msgid "Favorites"
 msgstr "Favoriter"
 
@@ -1377,7 +1376,7 @@ msgstr "Mer system"
 msgid "Utilities"
 msgstr "Nyttoprogram"
 
-#: src/bz-flathub-category.c:143 src/bz-flathub-page.blp:434
+#: src/bz-flathub-category.c:143 src/bz-flathub-page.blp:436
 msgid "Tools"
 msgstr "Verktyg"
 
@@ -1385,8 +1384,8 @@ msgstr "Verktyg"
 msgid "More Utilities"
 msgstr "Mer nyttoprogram"
 
-#: src/bz-flathub-category.c:144 src/bz-flathub-page.blp:106
-#: src/bz-flathub-page.blp:138
+#: src/bz-flathub-category.c:144 src/bz-flathub-page.blp:111
+#: src/bz-flathub-page.blp:143
 msgid "Trending"
 msgstr "Trendande"
 
@@ -1394,8 +1393,8 @@ msgstr "Trendande"
 msgid "More Trending"
 msgstr "Mer trendande"
 
-#: src/bz-flathub-category.c:145 src/bz-flathub-page.blp:112
-#: src/bz-flathub-page.blp:171
+#: src/bz-flathub-category.c:145 src/bz-flathub-page.blp:117
+#: src/bz-flathub-page.blp:176
 msgid "Popular"
 msgstr "Populärt"
 
@@ -1403,11 +1402,11 @@ msgstr "Populärt"
 msgid "More Popular"
 msgstr "Mer populärt"
 
-#: src/bz-flathub-category.c:146 src/bz-flathub-page.blp:160
+#: src/bz-flathub-category.c:146 src/bz-flathub-page.blp:165
 msgid "Recently Added"
 msgstr "Senast tillagt"
 
-#: src/bz-flathub-category.c:146 src/bz-flathub-page.blp:118
+#: src/bz-flathub-category.c:146 src/bz-flathub-page.blp:123
 msgid "New"
 msgstr "Nytt"
 
@@ -1415,11 +1414,11 @@ msgstr "Nytt"
 msgid "More New"
 msgstr "Mer nytt"
 
-#: src/bz-flathub-category.c:147 src/bz-flathub-page.blp:149
+#: src/bz-flathub-category.c:147 src/bz-flathub-page.blp:154
 msgid "Recently Updated"
 msgstr "Senast uppdaterat"
 
-#: src/bz-flathub-category.c:147 src/bz-flathub-page.blp:124
+#: src/bz-flathub-category.c:147 src/bz-flathub-page.blp:129
 msgid "Updated"
 msgstr "Uppdaterat"
 
@@ -1451,15 +1450,15 @@ msgstr "KDE-program"
 msgid "More KDE Apps"
 msgstr "Mer KDE-program"
 
-#: src/bz-flathub-category.c:151 src/bz-flathub-page.blp:416
+#: src/bz-flathub-category.c:151 src/bz-flathub-page.blp:418
 msgid "Games"
 msgstr "Spel"
 
-#: src/bz-flathub-category.c:151 src/bz-flathub-page.blp:476
+#: src/bz-flathub-category.c:151 src/bz-flathub-page.blp:475
 msgid "More Games"
 msgstr "Mer spel"
 
-#: src/bz-flathub-category.c:152 src/bz-flathub-page.blp:422
+#: src/bz-flathub-category.c:152 src/bz-flathub-page.blp:424
 msgid "Emulators"
 msgstr "Emulatorer"
 
@@ -1467,7 +1466,7 @@ msgstr "Emulatorer"
 msgid "More Emulators"
 msgstr "Mer emulatorer"
 
-#: src/bz-flathub-category.c:153 src/bz-flathub-page.blp:428
+#: src/bz-flathub-category.c:153 src/bz-flathub-page.blp:430
 msgid "Launchers"
 msgstr "Startare"
 
@@ -1482,6 +1481,110 @@ msgstr "Spelverktyg"
 #: src/bz-flathub-category.c:154
 msgid "More Game Tools"
 msgstr "Mer spelverktyg"
+
+#: src/bz-flathub-curated-section.c:65
+msgid "New Year, New Workflows"
+msgstr "Nytt år, nya arbetsflöden"
+
+#: src/bz-flathub-curated-section.c:65
+msgid "Apps to take notes, track tasks, and make plans"
+msgstr "Program för att ta anteckningar, följa uppgifter och planera"
+
+#: src/bz-flathub-curated-section.c:66
+msgid "Staff Picks"
+msgstr "Våra val"
+
+#: src/bz-flathub-curated-section.c:66
+msgid "Apps we love right now"
+msgstr "Program vi älskar just nu"
+
+#: src/bz-flathub-curated-section.c:67
+msgid "Get Creative"
+msgstr "Bli kreativ"
+
+#: src/bz-flathub-curated-section.c:67
+msgid "Essential apps for drawing, editing photos, and digital design"
+msgstr "Oumbärliga program för att rita, redigera foton, samt digitaldesign"
+
+#: src/bz-flathub-curated-section.c:68
+msgid "Build Native Apps"
+msgstr "Bygg inhemska program"
+
+#: src/bz-flathub-curated-section.c:68
+msgid "Develop apps that feel at home on your system"
+msgstr "Utveckla program som känns som hemma på ditt system"
+
+#: src/bz-flathub-curated-section.c:69
+msgid "Stay in Touch"
+msgstr "Håll kontakten"
+
+#: src/bz-flathub-curated-section.c:69
+msgid "Essential collaboration and communication apps"
+msgstr "Oumbärliga samarbets- och kommunikationsprogram"
+
+#: src/bz-flathub-curated-section.c:70
+msgid "Ready for Vacations"
+msgstr "Redo för semestern"
+
+#: src/bz-flathub-curated-section.c:70
+msgid "Maps, transit, weather, and trip planning apps"
+msgstr "Program för kartor, kollektivtrafik och reseplanering"
+
+#: src/bz-flathub-curated-section.c:71
+msgid "Smarter Every Day"
+msgstr "Smartare varje dag"
+
+#: src/bz-flathub-curated-section.c:71
+msgid "Apps to help you study, research, and write"
+msgstr "Program som hjälper dig studera, forska och skriva"
+
+#: src/bz-flathub-curated-section.c:72
+msgid "Get Cozy"
+msgstr "Slappna av"
+
+#: src/bz-flathub-curated-section.c:72
+msgid "Great apps for reading, watching movies, and playing games"
+msgstr "Utmärkta program för att läsa, se på film och spela spel"
+
+#: src/bz-flathub-curated-section.c:73
+msgid "Web Developer Essentials"
+msgstr "Oumbärligt för webbutvecklare"
+
+#: src/bz-flathub-curated-section.c:73
+msgid "Making websites is more fun with these apps"
+msgstr "Att göra webbplatser är roligare med dessa program"
+
+#: src/bz-flathub-curated-section.c:74
+msgid "Take Better Notes"
+msgstr "Ta bättre anteckningar"
+
+#: src/bz-flathub-curated-section.c:74
+msgid "Find your new favorite note taking tool"
+msgstr "Hitta ditt nya favoritverktyg för att ta anteckningar"
+
+#: src/bz-flathub-curated-section.c:75
+msgid "Get Focused"
+msgstr "Fokusera"
+
+#: src/bz-flathub-curated-section.c:75
+msgid "Great apps for task management"
+msgstr "Utmärkta program för uppgiftshantering"
+
+#: src/bz-flathub-curated-section.c:76
+msgid "Make Some Noise"
+msgstr "Gör lite oväsen"
+
+#: src/bz-flathub-curated-section.c:76
+msgid "Apps for creating and producing music"
+msgstr "Program för att skapa och producera musik"
+
+#: src/bz-flathub-curated-section.c:77
+msgid "Get To Work"
+msgstr "Börja jobba"
+
+#: src/bz-flathub-curated-section.c:77
+msgid "Essential office apps"
+msgstr "Oumbärliga kontorsprogram"
 
 #: src/bz-flathub-page.blp:22
 msgid "Flathub Not Added"
@@ -1507,27 +1610,27 @@ msgstr "Sök program"
 msgid "Reconnect"
 msgstr "Anslut igen"
 
-#: src/bz-flathub-page.blp:199
+#: src/bz-flathub-page.blp:204
 msgid "App of the Day"
 msgstr "Dagens program"
 
-#: src/bz-flathub-page.blp:262
+#: src/bz-flathub-page.blp:267
 msgid "On the Go"
 msgstr "I farten"
 
-#: src/bz-flathub-page.blp:274
+#: src/bz-flathub-page.blp:279
 msgid "Apps for your Linux phones and tablets"
 msgstr "Program för dina Linux-telefoner och plattor"
 
-#: src/bz-flathub-page.blp:285 src/bz-flathub-page.blp:320
+#: src/bz-flathub-page.blp:290 src/bz-flathub-page.blp:322
 msgid "More Mobile Apps"
 msgstr "Fler mobilappar"
 
-#: src/bz-flathub-page.blp:378
+#: src/bz-flathub-page.blp:380
 msgid "We​ ♥​ Games"
 msgstr "Vi​ ♥​ spel"
 
-#: src/bz-flathub-page.blp:391
+#: src/bz-flathub-page.blp:393
 msgid "Games and apps to run your favorite titles"
 msgstr "Spel och program för att köra dina favorittitlar"
 
@@ -1635,7 +1738,7 @@ msgid_plural "%d Applications"
 msgstr[0] "%d program"
 msgstr[1] "%d program"
 
-#: src/bz-full-view.c:498 src/bz-user-data-tile.c:160
+#: src/bz-full-view.c:470 src/bz-user-data-tile.c:160
 msgid "Failed to Remove User Data"
 msgstr "Misslyckades med att ta bort användardata"
 
@@ -1992,7 +2095,7 @@ msgstr ""
 "Nätverksanslutningen har datakvoter — automatiska uppdateringar av butiksdata "
 "är pausade"
 
-#: src/bz-preferences-dialog.blp:26 src/bz-window.blp:236 src/bz-window.blp:247
+#: src/bz-preferences-dialog.blp:26 src/bz-window.blp:243 src/bz-window.blp:254
 msgid "Refresh Manually"
 msgstr "Uppdatera manuellt"
 
@@ -2016,152 +2119,152 @@ msgstr "_Automatiskt"
 msgid "Automatically check for and download app updates"
 msgstr "Sök och hämta programuppdateringar automatiskt"
 
-#: src/bz-preferences-dialog.blp:48
+#: src/bz-preferences-dialog.blp:49
 msgid "_Manual"
 msgstr "_Manuellt"
 
-#: src/bz-preferences-dialog.blp:49
+#: src/bz-preferences-dialog.blp:50
 msgid "Checking for and downloading app updates must be done manually"
 msgstr "Sökning och hämtning av programuppdateringar måste göras manuellt"
 
-#: src/bz-preferences-dialog.blp:67
+#: src/bz-preferences-dialog.blp:69
 msgid "Automatic Update _Notifications"
 msgstr "_Aviseringar för automatiska uppdateringar"
 
-#: src/bz-preferences-dialog.blp:68
+#: src/bz-preferences-dialog.blp:70
 msgid "Notify when updates have been automatically installed"
 msgstr "Meddela då uppdateringar har installerats automatiskt"
 
-#: src/bz-preferences-dialog.blp:73
+#: src/bz-preferences-dialog.blp:75
 msgid "Content Filters"
 msgstr "Innehållsfilter"
 
-#: src/bz-preferences-dialog.blp:76
+#: src/bz-preferences-dialog.blp:78
 msgid "_Free Software Only"
 msgstr "Endast _fri programvara"
 
-#: src/bz-preferences-dialog.blp:77
+#: src/bz-preferences-dialog.blp:79
 msgid "Hide proprietary apps when browsing and searching"
 msgstr "Dölj proprietär programvara vid bläddring och sökning"
 
-#: src/bz-preferences-dialog.blp:82
+#: src/bz-preferences-dialog.blp:84
 msgid "F_lathub Results Only"
 msgstr "Endast F_lathub-resultat"
 
-#: src/bz-preferences-dialog.blp:83
+#: src/bz-preferences-dialog.blp:85
 msgid "Limit search and browse results to apps only available on Flathub"
 msgstr ""
 "Begränsa sök- och bläddringsresultat till bara program som finns på Flathub"
 
-#: src/bz-preferences-dialog.blp:88
+#: src/bz-preferences-dialog.blp:90
 msgid "_Verified Results Only"
 msgstr "Endast _verifierade resultat"
 
-#: src/bz-preferences-dialog.blp:89
+#: src/bz-preferences-dialog.blp:91
 msgid "Hide results that are not verified on Flathub"
 msgstr "Dölj resultat som inte är verifierade på Flathub"
 
-#: src/bz-preferences-dialog.blp:94
+#: src/bz-preferences-dialog.blp:96
 msgid "Hide _End-of-Life Apps"
 msgstr "Dölj program som _passerat slutet på sin livstid"
 
-#: src/bz-preferences-dialog.blp:95
+#: src/bz-preferences-dialog.blp:97
 msgid "Hide apps which are no longer supported by their developers"
 msgstr "Dölj program som inte längre stöds av utvecklarna"
 
-#: src/bz-preferences-dialog.blp:101
+#: src/bz-preferences-dialog.blp:103
 msgid "Progress Bar Theme"
 msgstr "Tema för förloppsindikator"
 
-#: src/bz-preferences-dialog.c:39
+#: src/bz-preferences-dialog.c:42
 msgid "Accent Color"
 msgstr "Accentfärg"
 
-#: src/bz-preferences-dialog.c:40
+#: src/bz-preferences-dialog.c:43
 msgid "Pride Colors"
 msgstr "Pridefärger"
 
-#: src/bz-preferences-dialog.c:41
+#: src/bz-preferences-dialog.c:44
 msgid "Lesbian Pride Colors"
 msgstr "Lesbisk pride-färger"
 
-#: src/bz-preferences-dialog.c:42
+#: src/bz-preferences-dialog.c:45
 msgid "Male Homosexual Pride Colors"
 msgstr "Manlig homosexuell pride-färger"
 
-#: src/bz-preferences-dialog.c:43
+#: src/bz-preferences-dialog.c:46
 msgid "Transgender Pride Colors"
 msgstr "Transgender-pridefärger"
 
-#: src/bz-preferences-dialog.c:44
+#: src/bz-preferences-dialog.c:47
 msgid "Nonbinary Pride Colors"
 msgstr "Ickebinär pride-färger"
 
-#: src/bz-preferences-dialog.c:45
+#: src/bz-preferences-dialog.c:48
 msgid "Bisexual Pride Colors"
 msgstr "Bisexuell pride-färger"
 
-#: src/bz-preferences-dialog.c:46
+#: src/bz-preferences-dialog.c:49
 msgid "Asexual Pride Colors"
 msgstr "Asexuell pride-färger"
 
-#: src/bz-preferences-dialog.c:47
+#: src/bz-preferences-dialog.c:50
 msgid "Pansexual Pride Colors"
 msgstr "Pansexuell pride-färger"
 
-#: src/bz-preferences-dialog.c:48
+#: src/bz-preferences-dialog.c:51
 msgid "Aromantic Pride Colors"
 msgstr "Aromantisk pride-färger"
 
-#: src/bz-preferences-dialog.c:49
+#: src/bz-preferences-dialog.c:52
 msgid "Genderfluid Pride Colors"
 msgstr "Genderfluid-pridefärger"
 
-#: src/bz-preferences-dialog.c:50
+#: src/bz-preferences-dialog.c:53
 msgid "Polysexual Pride Colors"
 msgstr "Polysexuell pride-färger"
 
-#: src/bz-preferences-dialog.c:51
+#: src/bz-preferences-dialog.c:54
 msgid "Omnisexual Pride Colors"
 msgstr "Omnisexuell pride-färger"
 
-#: src/bz-preferences-dialog.c:52
+#: src/bz-preferences-dialog.c:55
 msgid "Aroace Pride Colors"
 msgstr "Aromantisk asexuell pride-färger"
 
-#: src/bz-preferences-dialog.c:53
+#: src/bz-preferences-dialog.c:56
 msgid "Agender Pride Colors"
 msgstr "Agender-pridefärger"
 
-#: src/bz-preferences-dialog.c:54
+#: src/bz-preferences-dialog.c:57
 msgid "Genderqueer Pride Colors"
 msgstr "Genderqueer-pridefärger"
 
-#: src/bz-preferences-dialog.c:55
+#: src/bz-preferences-dialog.c:58
 msgid "Intersex Pride Colors"
 msgstr "Intersex-pridefärger"
 
-#: src/bz-preferences-dialog.c:56
+#: src/bz-preferences-dialog.c:59
 msgid "Demigender Pride Colors"
 msgstr "Demigender-pridefärger"
 
-#: src/bz-preferences-dialog.c:57
+#: src/bz-preferences-dialog.c:60
 msgid "Biromantic Pride Colors"
 msgstr "Biromantisk pride-färger"
 
-#: src/bz-preferences-dialog.c:58
+#: src/bz-preferences-dialog.c:61
 msgid "Disability Pride Colors"
 msgstr "Funktionshinder-pridefärger"
 
-#: src/bz-preferences-dialog.c:59
+#: src/bz-preferences-dialog.c:62
 msgid "Femboy Pride Colors"
 msgstr "Femboy-pridefärger"
 
-#: src/bz-preferences-dialog.c:60
+#: src/bz-preferences-dialog.c:63
 msgid "Neutrois Pride Colors"
 msgstr "Neutrois-pridefärger"
 
-#: src/bz-preferences-dialog.c:280
+#: src/bz-preferences-dialog.c:285
 msgid "Bazaar needs to run in the background to check for app updates"
 msgstr "Bazaar behöver köras i bakgrunden för att söka programuppdateringar"
 
@@ -2243,7 +2346,7 @@ msgstr "Avinstallera"
 msgid "Get"
 msgstr "/"
 
-#: src/bz-safety-dialog.blp:32 src/bz-safety-dialog.c:297
+#: src/bz-safety-dialog.blp:32 src/bz-safety-dialog.c:307
 #: src/safety-calculator.c:161
 msgid "Arbitrary Permissions"
 msgstr "Godtyckliga rättigheter"
@@ -2294,60 +2397,60 @@ msgstr ""
 "Detta program använder en gammal version av programvaruplattformen (SDK) och "
 "kan innehålla fel eller säkerhetssårbarheter som inte kommer fixas."
 
-#: src/bz-safety-dialog.c:283 src/bz-safety-dialog.c:317
+#: src/bz-safety-dialog.c:293 src/bz-safety-dialog.c:326
 msgid "Safety"
 msgstr "Säkerhet"
 
-#: src/bz-safety-dialog.c:377
+#: src/bz-safety-dialog.c:386
 #, c-format
 msgid "%s is Safe"
 msgstr "%s är säkert"
 
-#: src/bz-safety-dialog.c:382
+#: src/bz-safety-dialog.c:391
 #, c-format
 msgid "%s has no Unsafe Permissions"
 msgstr "%s har inga osäkra rättigheter"
 
-#: src/bz-safety-dialog.c:387
+#: src/bz-safety-dialog.c:396
 #, c-format
 msgid "%s is Probably Safe"
 msgstr "%s är troligen säkert"
 
-#: src/bz-safety-dialog.c:392
+#: src/bz-safety-dialog.c:401
 #, c-format
 msgid "%s is Possibly Unsafe"
 msgstr "%s är potentiellt osäkert"
 
-#: src/bz-safety-dialog.c:397
+#: src/bz-safety-dialog.c:406
 #, c-format
 msgid "%s is Unsafe"
 msgstr "%s är osäkert"
 
-#: src/bz-screenshot-page.blp:41
+#: src/bz-screenshot-page.blp:73
 msgid "Back"
 msgstr "Bakåt"
 
-#: src/bz-screenshot-page.blp:71
+#: src/bz-screenshot-page.blp:103
 msgid "Previous Screenshot"
 msgstr "Föregående skärmbild"
 
-#: src/bz-screenshot-page.blp:81
+#: src/bz-screenshot-page.blp:113
 msgid "Next Screenshot"
 msgstr "Nästa skärmbild"
 
-#: src/bz-screenshot-page.blp:97
+#: src/bz-screenshot-page.blp:129
 msgid "Copy Image"
 msgstr "Kopiera bild"
 
-#: src/bz-screenshot-page.blp:160
+#: src/bz-screenshot-page.blp:192
 msgid "Reset View"
 msgstr "Återställ vy"
 
-#: src/bz-screenshot-page.blp:171
+#: src/bz-screenshot-page.blp:203
 msgid "Zoom Out"
 msgstr "Zooma ut"
 
-#: src/bz-screenshot-page.blp:181
+#: src/bz-screenshot-page.blp:213
 msgid "Zoom In"
 msgstr "Zooma in"
 
@@ -2761,39 +2864,39 @@ msgstr "_Installera alla"
 msgid "Finished in %.02f seconds"
 msgstr "Slutförde på %.02f sekunder"
 
-#: src/bz-transaction-tile.blp:129
+#: src/bz-transaction-tile.blp:130
 msgid "App Add-On"
 msgstr "Programtillägg"
 
-#: src/bz-transaction-tile.blp:158
+#: src/bz-transaction-tile.blp:159
 msgid "Runtime"
 msgstr "Exekveringsmiljö"
 
-#: src/bz-transaction-tile.blp:182
+#: src/bz-transaction-tile.blp:183
 msgid "In Queue"
 msgstr "I kö"
 
-#: src/bz-transaction-tile.blp:206
+#: src/bz-transaction-tile.blp:207
 msgid "Done"
 msgstr "Färdig"
 
-#: src/bz-transaction-tile.blp:230
+#: src/bz-transaction-tile.blp:231
 msgid "Cancelled"
 msgstr "Avbruten"
 
-#: src/bz-transaction-tile.blp:254
+#: src/bz-transaction-tile.blp:255
 msgid "Error"
 msgstr "Fel"
 
-#: src/bz-transaction-tile.blp:313
+#: src/bz-transaction-tile.blp:314
 msgid "Cancel Transaction"
 msgstr "Avbryt transaktion"
 
-#: src/bz-transaction-tile.blp:323
+#: src/bz-transaction-tile.blp:324
 msgid "Show Details"
 msgstr "Visa detaljer"
 
-#: src/bz-transaction-tile.blp:438
+#: src/bz-transaction-tile.blp:439
 msgid "Show Error Info"
 msgstr "Visa felinfo"
 
@@ -2854,99 +2957,99 @@ msgstr "Öppna användardatamapp"
 msgid "Trash User Data"
 msgstr "Kasta användardata i papperskorgen"
 
-#: src/bz-window.blp:72
+#: src/bz-window.blp:79
 msgid "Refreshing"
 msgstr "Uppdaterar"
 
-#: src/bz-window.blp:90
+#: src/bz-window.blp:97
 msgid "Curated"
 msgstr "Utvalt"
 
-#: src/bz-window.blp:102
+#: src/bz-window.blp:109
 msgid "Explore"
 msgstr "Utforska"
 
 #. Translators: .
-#: src/bz-window.blp:114
+#: src/bz-window.blp:121
 msgid "Library"
 msgstr "Bibliotek"
 
-#: src/bz-window.blp:129
+#: src/bz-window.blp:136
 msgid "Search"
 msgstr "Sök"
 
-#: src/bz-window.blp:216
+#: src/bz-window.blp:223
 msgid "Main Menu"
 msgstr "Huvudmeny"
 
-#: src/bz-window.blp:227
+#: src/bz-window.blp:234
 msgid "You are running a new version of Bazaar!"
 msgstr "Du kör en ny version av Bazaar!"
 
-#: src/bz-window.blp:228
+#: src/bz-window.blp:235
 msgid "See What's New"
 msgstr "Se vad som är nytt"
 
-#: src/bz-window.blp:235
+#: src/bz-window.blp:242
 msgid "You have a network connection but are viewing a cached version of Flathub"
 msgstr "Du har en nätverksanslutning men tittar på en cachad version av Flathub"
 
-#: src/bz-window.blp:246
+#: src/bz-window.blp:253
 msgid "Network connection is metered — automatic refreshes disabled"
 msgstr ""
 "Nätverksanslutningen har datakvoter — automatiska uppdateringar är inaktiverade"
 
-#: src/bz-window.blp:292
+#: src/bz-window.blp:289
 msgid "_Donate to Bazaar"
 msgstr "_Donera till Bazaar"
 
-#: src/bz-window.blp:298
+#: src/bz-window.blp:295
 msgid "_Refresh"
 msgstr "_Uppdatera"
 
-#: src/bz-window.blp:302
+#: src/bz-window.blp:299
 msgid "_Login With Flathub"
 msgstr "_Logga in med Flathub"
 
-#: src/bz-window.blp:308
+#: src/bz-window.blp:305
 msgid "_Manage Leftover User Data"
 msgstr "_Hantera kvarblivna användardata"
 
-#: src/bz-window.blp:314
+#: src/bz-window.blp:311
 msgid "_Preferences"
 msgstr "_Inställningar"
 
-#: src/bz-window.blp:319
+#: src/bz-window.blp:316
 msgid "_Keyboard Shortcuts"
 msgstr "_Tangentbordsgenvägar"
 
-#: src/bz-window.blp:324
+#: src/bz-window.blp:321
 msgid "_About Bazaar"
 msgstr "_Om Bazaar"
 
-#: src/bz-window.blp:330
+#: src/bz-window.blp:327
 msgid "_Quit Bazaar"
 msgstr "A_vsluta Bazaar"
 
-#: src/bz-window.blp:355
+#: src/bz-window.blp:352
 msgid "Log Out"
 msgstr "Logga ut"
 
 #. Translators: %s is the title of the current page
-#: src/bz-window.c:390
+#: src/bz-window.c:395
 #, c-format
 msgid "Bazaar — %s"
 msgstr "Bazaar — %s"
 
-#: src/bz-window.c:635 src/bz-window.c:673
+#: src/bz-window.c:668 src/bz-window.c:706
 msgid "Failed to launch application"
 msgstr "Misslyckades med att starta program"
 
-#: src/bz-window.c:925
+#: src/bz-window.c:962
 msgid "You can't remove Bazaar from Bazaar!"
 msgstr "Du kör inte ta bort Bazaar från Bazaar!"
 
-#: src/bz-window.c:1238 src/bz-window.c:1272
+#: src/bz-window.c:1298 src/bz-window.c:1332
 msgid "Can't do that right now!"
 msgstr "Kan inte göra det just nu!"
 
@@ -3471,6 +3574,10 @@ msgstr "%s och %s har uppdaterats."
 #, c-format
 msgid "Includes %s, %s and %s."
 msgstr "Inkluderar %s, %s och %s."
+
+# TODO: Translatornote om att det är ett namn på https://flathub.org/en/apps/io.github.nokse22.Exhibit
+#~ msgid "Exhibit app page"
+#~ msgstr "Programsida för Exhibit"
 
 #~ msgid "Donate Button"
 #~ msgstr "Donera-knapp"
