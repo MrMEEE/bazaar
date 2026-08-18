@@ -1141,16 +1141,6 @@ load_local_ref_fiber (LoadLocalRefData *data)
             "Failed to load locate \"Name\" key in flatpakref '%s': %s",
             uri, local_error->message);
 
-      {
-        g_autoptr (BzBackendNotification) notif = NULL;
-
-        notif = bz_backend_notification_new ();
-        bz_backend_notification_set_kind (notif, BZ_BACKEND_NOTIFICATION_KIND_PRESENT_ID);
-        bz_backend_notification_set_generic_id (notif, name);
-
-        send_notif_all (self, notif, TRUE);
-      }
-
       return dex_future_new_take_string (g_steal_pointer (&name));
     }
   else
