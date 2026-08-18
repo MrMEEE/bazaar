@@ -561,15 +561,7 @@ bz_application_command_line (GApplication            *app,
     command_line_open_location (self, cmdline, locations[0]);
 
   if (search_term != NULL)
-    {
-      GtkWindow *window = NULL;
-
-      window = get_or_create_window (self);
-      if (adw_application_window_get_visible_dialog (ADW_APPLICATION_WINDOW (window)) != NULL)
-        window = new_window (self);
-
-      bz_window_search (BZ_WINDOW (window), search_term);
-    }
+    bz_window_search (BZ_WINDOW (get_or_create_window (self)), search_term);
 
   return EXIT_SUCCESS;
 }
@@ -2166,9 +2158,6 @@ open_flatpakref_fiber (BzWeakRef *wr,
 
       window = get_or_create_window (self);
 
-      if (adw_application_window_get_visible_dialog (ADW_APPLICATION_WINDOW (window)) != NULL)
-        window = new_window (self);
-
       bundle_result = BZ_FLATPAK_BUNDLE_RESULT (g_value_get_object (value));
       entry         = BZ_ENTRY (bz_flatpak_bundle_result_get_entry (bundle_result));
       repo          = bz_flatpak_bundle_result_get_runtime_repo (bundle_result);
@@ -2212,8 +2201,6 @@ open_metainfo_fiber (BzWeakRef *wr,
   dex_await (dex_ref (self->ready_to_open_files), NULL);
 
   window = get_or_create_window (self);
-  if (adw_application_window_get_visible_dialog (ADW_APPLICATION_WINDOW (window)) != NULL)
-    window = new_window (self);
 
   pick_future = bz_metainfo_preview_open_file (file, window);
   dex_await (dex_ref (pick_future), NULL);
@@ -3710,6 +3697,9 @@ get_or_create_window (BzApplication *self)
   window = gtk_application_get_active_window (GTK_APPLICATION (self));
   if (BZ_IS_WINDOW (window))
     {
+      if (adw_application_window_get_visible_dialog (ADW_APPLICATION_WINDOW (window)) != NULL)
+        return new_window (self);
+
       gtk_window_present (window);
       return window;
     }
@@ -3719,6 +3709,9 @@ get_or_create_window (BzApplication *self)
     {
       if (BZ_IS_WINDOW (l->data))
         {
+          if (adw_application_window_get_visible_dialog (ADW_APPLICATION_WINDOW (l->data)) != NULL)
+            continue;
+
           gtk_window_present (GTK_WINDOW (l->data));
           return GTK_WINDOW (l->data);
         }
@@ -3989,9 +3982,6 @@ open_generic_id (BzApplication *self,
     }
 
   window = get_or_create_window (self);
-
-  if (adw_application_window_get_visible_dialog (ADW_APPLICATION_WINDOW (window)) != NULL)
-    window = new_window (self);
 
   if (group != NULL)
     {
