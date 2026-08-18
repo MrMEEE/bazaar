@@ -1694,17 +1694,6 @@ respond_to_flatpak_fiber (BzWeakRef             *wr,
       kind  = bz_backend_notification_get_kind (notif);
       switch (kind)
         {
-        case BZ_BACKEND_NOTIFICATION_KIND_PRESENT_ID:
-          {
-            const char *id = NULL;
-
-            id = bz_backend_notification_get_generic_id (notif);
-            if (id == NULL)
-              break;
-
-            open_generic_id (self, id, TRUE);
-          }
-          break;
         case BZ_BACKEND_NOTIFICATION_KIND_ERROR:
           {
             const char *error  = NULL;
@@ -1894,7 +1883,6 @@ respond_to_flatpak_fiber (BzWeakRef             *wr,
               case BZ_BACKEND_NOTIFICATION_KIND_ERROR:
               case BZ_BACKEND_NOTIFICATION_KIND_EXTERNAL_CHANGE:
               case BZ_BACKEND_NOTIFICATION_KIND_INVALIDATE_REMOTES:
-              case BZ_BACKEND_NOTIFICATION_KIND_PRESENT_ID:
               case BZ_BACKEND_NOTIFICATION_KIND_REMOTE_SYNC_FINISH:
               case BZ_BACKEND_NOTIFICATION_KIND_REMOTE_SYNC_START:
               case BZ_BACKEND_NOTIFICATION_KIND_REPLACE_ENTRY:
@@ -2127,8 +2115,11 @@ open_flatpakref_fiber (BzWeakRef *wr,
   g_autoptr (GError) local_error = NULL;
   g_autoptr (DexFuture) future   = NULL;
   const GValue *value            = NULL;
+  gboolean      had_to_wait      = FALSE;
 
   bz_weak_get_or_return_reject (self, &wr->ref);
+
+  had_to_wait = !dex_future_is_resolved (DEX_FUTURE (self->ready_to_open_files));
   dex_await (dex_ref (self->ready_to_open_files), NULL);
 
   future = bz_backend_load_local_package (BZ_BACKEND (self->flatpak), file, NULL);
@@ -2180,6 +2171,14 @@ open_flatpakref_fiber (BzWeakRef *wr,
           "runtime-repo", repo,
           NULL);
       adw_dialog_present (ADW_DIALOG (dialog), GTK_WIDGET (window));
+    }
+  else if (G_VALUE_HOLDS_STRING (value))
+    {
+      const char *id = NULL;
+
+      id = g_value_get_string (value);
+      if (id != NULL)
+        open_generic_id (self, id, !had_to_wait);
     }
 
   return dex_future_new_true ();
