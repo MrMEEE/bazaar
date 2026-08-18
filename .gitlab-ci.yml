@@ -1,41 +1,27 @@
 include:
   - project: "gnome/citemplates"
     file: "flatpak/flatpak_ci_initiative.yml"
-
-  - component: "gitlab.gnome.org/GNOME/citemplates/gnomeos-basic-ci@master"
-    inputs:
-      job-stage: "test"
-      meson-options: "-Ddevelopment=true"
-
-  - component: gitlab.gnome.org/GNOME/citemplates/release-service@master
+  - component: gitlab.gnome.org/GNOME/citemplates/basic-release-with-dist@master
     inputs:
       dist-job-name: "flatpak@x86_64"
 
-stages:
-  - "test"
-  - "deploy"
-
 .flatpak_vars:
+  image: "quay.io/gnome_infrastructure/gnome-runtime-images:gnome-50"
   variables:
     FLATPAK_MODULE: "bazaar"
     MANIFEST_PATH: "build-aux/flatpak/io.github.kolunmi.Bazaar.json"
-    RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
     APP_ID: "io.github.kolunmi.Bazaar"
-  extends: ".flatpak"
+    RUNTIME_REPO: "https://dl.flathub.org/repo/flathub.flatpakrepo"
 
 flatpak@x86_64:
   extends:
-    - '.flatpak_vars'
     - '.flatpak@x86_64'
-  variables:
-    BUNDLE: "io.github.kolunmi.Bazaar-x86_64.flatpak"
+    - '.flatpak_vars'
 
 flatpak@aarch64:
   extends:
-    - '.flatpak_vars'
     - '.flatpak@aarch64'
-  variables:
-    BUNDLE: "io.github.kolunmi.Bazaar-aarch64.flatpak"
+    - '.flatpak_vars'
 
 nightly@x86_64:
   extends: ".publish_nightly"
