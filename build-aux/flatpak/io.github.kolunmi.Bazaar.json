@@ -5,7 +5,7 @@
   "sdk": "org.gnome.Sdk",
   "command": "bazaar-daemon",
   "sdk-extensions": [
-    "org.freedesktop.Sdk.Extension.llvm20"
+    "org.freedesktop.Sdk.Extension.llvm22"
   ],
   "tags": [
     "nightly"
@@ -46,8 +46,8 @@
       "name": "bazaar",
       "buildsystem": "meson",
       "build-options": {
-        "append-path": "/usr/lib/sdk/llvm20/bin",
-        "prepend-ld-library-path": "/usr/lib/sdk/llvm20/lib"
+        "append-path": "/usr/lib/sdk/llvm22/bin",
+        "prepend-ld-library-path": "/usr/lib/sdk/llvm22/lib"
       },
       "config-opts": [
         "-Ddevelopment=true",
