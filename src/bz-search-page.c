@@ -884,6 +884,6 @@ emit_idx (BzSearchPage *self,
   result = g_list_model_get_item (G_LIST_MODEL (model), selected_idx);
   group  = bz_search_result_get_group (result);
 
-  gtk_widget_activate_action (GTK_WIDGET (self), "window.show-group", "s",
-                              bz_entry_group_get_id (group));
+  gtk_widget_activate_action (GTK_WIDGET (self), "window.show-group", "(sb)",
+                              bz_entry_group_get_id (group), TRUE);
 }

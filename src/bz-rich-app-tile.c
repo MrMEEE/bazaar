@@ -223,8 +223,8 @@ tile_clicked_cb (GtkButton     *button,
   if (self->group == NULL)
     return;
 
-  gtk_widget_activate_action (GTK_WIDGET (self), "window.show-group", "s",
-                              bz_entry_group_get_id (self->group));
+  gtk_widget_activate_action (GTK_WIDGET (self), "window.show-group", "(sb)",
+                              bz_entry_group_get_id (self->group), TRUE);
 }
 
 static gboolean

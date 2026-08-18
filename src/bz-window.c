@@ -278,23 +278,6 @@ update_cb (BzWindow   *self,
     g_object_unref (updates_buf[i]);
 }
 
-void
-bz_window_show_app_id (BzWindow   *self,
-                       const char *app_id)
-{
-  g_autoptr (BzEntryGroup) group = NULL;
-
-  g_return_if_fail (BZ_IS_WINDOW (self));
-  g_return_if_fail (app_id != NULL);
-
-  group = bz_application_map_factory_convert_one (
-      bz_state_info_get_application_factory (self->state),
-      gtk_string_object_new (app_id));
-
-  if (group != NULL)
-    bz_window_show_group (self, group);
-}
-
 static void
 page_toggled_cb (BzWindow       *self,
                  GParamSpec     *pspec,
@@ -540,9 +523,11 @@ action_show_group (GtkWidget  *widget,
 {
   BzWindow   *self               = BZ_WINDOW (widget);
   const char *id                 = NULL;
+  gboolean    animate            = FALSE;
   g_autoptr (BzEntryGroup) group = NULL;
 
-  id    = g_variant_get_string (parameter, NULL);
+  g_variant_get (parameter, "(&sb)", &id, &animate);
+
   group = bz_application_map_factory_convert_one (
       bz_state_info_get_application_factory (self->state),
       gtk_string_object_new (id));
@@ -562,7 +547,11 @@ action_show_group (GtkWidget  *widget,
       adw_dialog_present (dialog, GTK_WIDGET (self));
     }
   else
-    bz_window_show_group (self, group);
+    {
+      adw_navigation_view_set_animate_transitions (self->navigation_view, animate);
+      bz_window_show_group (self, group);
+      adw_navigation_view_set_animate_transitions (self->navigation_view, TRUE);
+    }
 }
 
 static void
@@ -840,7 +829,7 @@ bz_window_class_init (BzWindowClass *klass)
   gtk_widget_class_install_action (widget_class, "window.install-group", "(sb)", action_install_group);
   gtk_widget_class_install_action (widget_class, "window.remove-group", "(sb)", action_remove_group);
   gtk_widget_class_install_action (widget_class, "window.cancel-group", "s", action_cancel_group);
-  gtk_widget_class_install_action (widget_class, "window.show-group", "s", action_show_group);
+  gtk_widget_class_install_action (widget_class, "window.show-group", "(sb)", action_show_group);
   gtk_widget_class_install_action (widget_class, "window.addons-group", "s", action_addons_group);
   gtk_widget_class_install_action (widget_class, "window.bulk-install", NULL, action_bulk_install);
   gtk_widget_class_install_action (widget_class, "window.launch-group", "s", action_launch_group);

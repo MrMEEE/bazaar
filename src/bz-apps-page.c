@@ -184,8 +184,8 @@ featured_carousel_group_clicked_cb (BzAppsPage   *self,
                                     BzEntryGroup *group,
                                     GtkWidget    *carousel)
 {
-  gtk_widget_activate_action (GTK_WIDGET (self), "window.show-group", "s",
-                              bz_entry_group_get_id (group));
+  gtk_widget_activate_action (GTK_WIDGET (self), "window.show-group", "(sb)",
+                              bz_entry_group_get_id (group), TRUE);
 }
 
 static void

@@ -320,7 +320,7 @@ show_cb (BzBundleInstallDialog *self,
   id = bz_entry_get_id (self->entry);
   adw_dialog_close (ADW_DIALOG (gtk_widget_get_ancestor (GTK_WIDGET (self), ADW_TYPE_DIALOG)));
   gtk_widget_activate_action (GTK_WIDGET (self), "window.show-group",
-                              "s", id);
+                              "(sb)", id, TRUE);
 }
 
 static void

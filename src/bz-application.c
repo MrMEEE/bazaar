@@ -323,7 +323,8 @@ command_line_open_location (BzApplication           *self,
 
 static void
 open_generic_id (BzApplication *self,
-                 const char    *generic_id);
+                 const char    *generic_id,
+                 gboolean       animate);
 
 static gpointer
 map_strings_to_files (GtkStringObject *string,
@@ -669,17 +670,13 @@ bz_application_show_app_id_action (GSimpleAction *action,
 {
   BzApplication *self   = user_data;
   GtkWindow     *window = NULL;
-  const char    *app_id = NULL;
 
   g_assert (BZ_IS_APPLICATION (self));
 
   window = get_or_create_window (self);
 
   if (parameter != NULL)
-    {
-      app_id = g_variant_get_string (parameter, NULL);
-      bz_window_show_app_id (BZ_WINDOW (window), app_id);
-    }
+    gtk_widget_activate_action (GTK_WIDGET (window), "window.show-group", "(sb)", g_variant_get_string (parameter, NULL), TRUE);
 }
 
 static void
@@ -1713,7 +1710,7 @@ respond_to_flatpak_fiber (BzWeakRef             *wr,
             if (id == NULL)
               break;
 
-            open_generic_id (self, id);
+            open_generic_id (self, id, TRUE);
           }
           break;
         case BZ_BACKEND_NOTIFICATION_KIND_ERROR:
@@ -2119,11 +2116,14 @@ open_appstream_fiber (BzWeakRef  *wr,
                       const char *id)
 {
   g_autoptr (BzApplication) self = NULL;
+  gboolean had_to_wait           = FALSE;
 
   bz_weak_get_or_return_reject (self, &wr->ref);
+
+  had_to_wait = !dex_future_is_resolved (DEX_FUTURE (self->ready_to_open_files));
   dex_await (dex_ref (self->ready_to_open_files), NULL);
 
-  open_generic_id (self, id);
+  open_generic_id (self, id, !had_to_wait);
   return dex_future_new_true ();
 }
 
@@ -3913,7 +3913,8 @@ command_line_open_location (BzApplication           *self,
 
 static void
 open_generic_id (BzApplication *self,
-                 const char    *generic_id)
+                 const char    *generic_id,
+                 gboolean       animate)
 {
   BzEntryGroup    *group        = NULL;
   GtkWindow       *window       = NULL;
@@ -3994,7 +3995,7 @@ open_generic_id (BzApplication *self,
 
   if (group != NULL)
     {
-      gtk_widget_activate_action (GTK_WIDGET (window), "window.show-group", "s", matched_id);
+      gtk_widget_activate_action (GTK_WIDGET (window), "window.show-group", "(sb)", matched_id, animate);
 
       if (case_fixed)
         bz_show_error_for_widget (
