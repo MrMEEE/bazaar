@@ -17,9 +17,9 @@ case "$INSTR" in
             echo "${VERSION}"
         fi
         ;;
-    get-gh-release)
+    get-gitlab-release)
         TAG="v${VERSION}"
-        echo "https://github.com/bazaar-org/bazaar/releases/tag/${TAG}"
+        echo "https://gitlab.gnome.org/World/bazaar/-/releases/${TAG}"
         ;;
     get-cache)
         echo "${CACHE_VERSION}"
