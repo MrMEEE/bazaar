@@ -48,9 +48,6 @@ main (int   argc,
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  /* Init Bazaar GTK Extensions */
-  bge_init ();
-
   if (argc > 1 && g_strcmp0 (argv[1], REFRESH_WORKER_CLI_OPTION) == 0)
     result = run_refresh_worker (argc, argv);
   else if (argc > 1 && g_strcmp0 (argv[1], UPDATE_WORKER_CLI_OPTION) == 0)
@@ -58,6 +55,9 @@ main (int   argc,
   else
     {
       g_autoptr (BzApplication) app = NULL;
+
+      /* Init Bazaar GTK Extensions (see ../bge/) */
+      bge_init ();
 
       app = g_object_new (
           BZ_TYPE_APPLICATION,
