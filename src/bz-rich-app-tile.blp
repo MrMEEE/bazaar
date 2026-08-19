@@ -15,14 +15,15 @@ template $BzRichAppTile: $BzListTile {
       "rich-tile-card",
     ]
 
-    $BzThemedEntryGroupRect picture_box {
+    $BzThemedRect picture_box {
       height-request: 200;
 
       styles [
         "rich-screenshot-box",
       ]
 
-      group: bind template.group as <$BzEntryGroup>;
+      light-color: bind template.group as <$BzEntryGroup>.light-accent-color as <string>;
+      dark-color: bind template.group as <$BzEntryGroup>.dark-accent-color as <string>;
 
       child: Box {
         margin-start: 12;

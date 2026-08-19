@@ -18,11 +18,12 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include "bz-rich-app-tile.h"
+#include <bzvala.h>
+
 #include "bz-application.h"
 #include "bz-entry.h"
+#include "bz-rich-app-tile.h"
 #include "bz-rounded-picture.h"
-#include "bz-themed-entry-group-rect.h"
 #include "bz-transact-icon.h"
 #include "util.h"
 
@@ -350,7 +351,7 @@ bz_rich_app_tile_class_init (BzRichAppTileClass *klass)
   g_type_ensure (BZ_TYPE_TRANSACT_ICON);
   g_type_ensure (BZ_TYPE_LIST_TILE);
   g_type_ensure (BZ_TYPE_ROUNDED_PICTURE);
-  g_type_ensure (BZ_TYPE_THEMED_ENTRY_GROUP_RECT);
+  g_type_ensure (BZ_TYPE_THEMED_RECT);
 
   gtk_widget_class_set_template_from_resource (widget_class, "/io/github/kolunmi/Bazaar/bz-rich-app-tile.ui");
   gtk_widget_class_bind_template_callback (widget_class, tile_clicked_cb);
