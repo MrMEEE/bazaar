@@ -149,7 +149,6 @@ bz_sources = files(
   'bz-share-list.c',
   'bz-stats-dialog.c',
   'bz-subcategory-list.c',
-  'bz-themed-entry-group-rect.c',
   'bz-transact-icon.c',
   'bz-transaction-dialog.c',
   'bz-transaction-list-dialog.c',
@@ -205,6 +204,26 @@ bz_deps = [
   malcontent_dep,
   gtksourceview_dep,
 ]
+
+
+vala_deps = [
+  gtk_dep,
+  libadwaita_dep,
+]
+vala_sources = files(
+  'bz-themed-rect.vala',
+)
+
+bz_vala_static = static_library(
+  'bzvala', vala_sources,
+  dependencies: vala_deps,
+  vala_header: 'bzvala.h',
+)
+bz_vala_dep = declare_dependency(
+  link_with: bz_vala_static,
+  dependencies: [vala_deps],
+)
+bz_deps += [bz_vala_dep]
 
 gen_gobject = find_program('./gen_gobject.sh')
 gen_gobject_header = generator(

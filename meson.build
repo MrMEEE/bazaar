@@ -1,4 +1,4 @@
-project('bazaar', 'c',
+project('bazaar', ['c', 'vala'],
           version: run_command('version.sh', 'get-vcs').stdout().strip(),
     meson_version: '>= 1.0.0',
   default_options: [
