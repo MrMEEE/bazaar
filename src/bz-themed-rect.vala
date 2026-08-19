@@ -20,67 +20,67 @@
  */
 
 public class Bz.ThemedRect : Gtk.Widget {
-	private Gdk.RGBA _light_rgba;
-	private string? _light_string;
-	public string? light_color {
-		get { return _light_string; }
-		set {
-			if (value != null)
-				_light_rgba.parse (value);
-			_light_string = value;
-		}
-	}
+    private Gdk.RGBA _light_rgba;
+    private string? _light_string;
+    public string? light_color {
+        get { return _light_string; }
+        set {
+            if (value != null)
+                _light_rgba.parse (value);
+            _light_string = value;
+        }
+    }
 
-	private Gdk.RGBA _dark_rgba;
-	private string? _dark_string;
-	public string? dark_color {
-		get { return _dark_string; }
-		set {
-			if (value != null)
-				_dark_rgba.parse (value);
-			_dark_string = value;
-		}
-	}
-	
-	private Gtk.Widget? _child;
-	public Gtk.Widget? child {
-		get { return _child; }
-		set {
-			if (value == child)
-				return;
+    private Gdk.RGBA _dark_rgba;
+    private string? _dark_string;
+    public string? dark_color {
+        get { return _dark_string; }
+        set {
+            if (value != null)
+                _dark_rgba.parse (value);
+            _dark_string = value;
+        }
+    }
+    
+    private Gtk.Widget? _child;
+    public Gtk.Widget? child {
+        get { return _child; }
+        set {
+            if (value == child)
+                return;
 
-			_child?.unparent ();
+            _child?.unparent ();
 
-			_child = value;
-			value?.set_parent (this);
-		}
-	}
+            _child = value;
+            value?.set_parent (this);
+        }
+    }
 
-	construct {
-		Adw.StyleManager.get_default ().notify["dark"].connect (queue_draw);
-	}
+    construct {
+        Adw.StyleManager.get_default ().notify["dark"].connect (queue_draw);
+    }
 
-	static construct {
+    static construct {
         set_layout_manager_type (typeof (Gtk.BinLayout));
         set_css_name ("BzThemedRect");
     }
 
     protected override void snapshot (Gtk.Snapshot snapshot) {
-		var dark = Adw.StyleManager.get_default ().get_dark ();
-		var color = dark ? _dark_string : _light_string;
+        var dark = Adw.StyleManager.get_default ().get_dark ();
+        var color = dark ? _dark_string : _light_string;
 
-		if (color != null) {
-			var rgba = dark ? _dark_rgba : _light_rgba;
-			snapshot.append_color (rgba, {{ 0, 0 }, { get_width (), get_height () }});
-		}
+        if (color != null) {
+            var rgba = dark ? _dark_rgba : _light_rgba;
+            snapshot.append_color (rgba, {{ 0, 0 }, { get_width (), get_height () }});
+        }
 
-		if (_child != null)
-			snapshot_child (_child, snapshot);
+        if (_child != null)
+            snapshot_child (_child, snapshot);
     }
 
-	protected override void dispose () {
+    protected override void dispose () {
         if (_child != null) {
-			_child.unparent ();
+            _child.unparent ();
             _child = null;
         }
 
