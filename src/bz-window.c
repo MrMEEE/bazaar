@@ -385,7 +385,8 @@ drop_accept_cb (BzWindow      *self,
                 GdkDrop       *drop,
                 GtkDropTarget *target)
 {
-  return !bz_state_info_get_busy (self->state) &&
+  return gdk_content_formats_contain_gtype (gdk_drop_get_formats (drop), G_TYPE_FILE) &&
+         !bz_state_info_get_busy (self->state) &&
          self->screenshot_page == NULL &&
          adw_application_window_get_visible_dialog (ADW_APPLICATION_WINDOW (self)) == NULL;
 }
