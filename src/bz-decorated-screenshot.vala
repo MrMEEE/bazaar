@@ -1,6 +1,7 @@
-/* bz-decorated-screenshot.h
+/*
+ * bz-decorated-screenshot.vala
  *
- * Copyright 2025 Adam Masciola
+ * Copyright 2026 Eva M
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,25 +18,18 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-#pragma once
-#include "bz-async-texture.h"
-#include <adwaita.h>
 
-G_BEGIN_DECLS
+public class Bz.DecoratedScreenshot : Gtk.Button {
+    public Bz.AsyncTexture? async_texture { get; set; }
 
-#define BZ_TYPE_DECORATED_SCREENSHOT (bz_decorated_screenshot_get_type ())
-G_DECLARE_FINAL_TYPE (BzDecoratedScreenshot, bz_decorated_screenshot, BZ, DECORATED_SCREENSHOT, GtkButton)
+    construct {
+        init_template ();
+    }
+    
+    static construct {
+        /* Can't use class annotation since the gresources are compiled into the
+         * main binary */
+        set_template_from_resource ("/io/github/kolunmi/Bazaar/bz-decorated-screenshot.ui");
+    }
+}
 
-BzDecoratedScreenshot *
-bz_decorated_screenshot_new (void);
-
-BzAsyncTexture *
-bz_decorated_screenshot_get_async_texture (BzDecoratedScreenshot *self);
-
-void
-bz_decorated_screenshot_set_async_texture (BzDecoratedScreenshot *self,
-                                           BzAsyncTexture        *async_texture);
-
-G_END_DECLS
-
-/* End of bz-decorated-screenshot.h */
