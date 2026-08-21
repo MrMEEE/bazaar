@@ -129,6 +129,8 @@ struct _BzApplication
   GtkStringList           *txt_blocklists;
   gboolean                 flathub_remote_initialized;
   gboolean                 had_cache_on_init;
+  gboolean                 no_window_refresh;
+  gboolean                 holding_for_no_window_refresh;
   gboolean                 running;
   guint                    periodic_timeout_source;
   int                      n_entries_incoming;
@@ -441,6 +443,7 @@ bz_application_command_line (GApplication            *app,
   g_auto (GStrv) argv                 = NULL;
   gboolean help                       = FALSE;
   gboolean no_window                  = FALSE;
+  gboolean no_window_refresh          = FALSE;
   g_auto (GStrv) blocklists_strv      = NULL;
   g_auto (GStrv) content_configs_strv = NULL;
   g_auto (GStrv) locations            = NULL;
@@ -449,6 +452,7 @@ bz_application_command_line (GApplication            *app,
   GOptionEntry main_entries[] = {
     { "help", 0, 0, G_OPTION_ARG_NONE, &help, "Print help" },
     { "no-window", 0, 0, G_OPTION_ARG_NONE, &no_window, "Ensure the service is running without creating a new window (daemon)" },
+    { "no-window-refresh", 0, 0, G_OPTION_ARG_NONE, &no_window_refresh, "Refresh remotes in the background, and quits if no windows are open at the end." },
     { "extra-blocklist", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &blocklists_strv, "Add an extra blocklist to read from" },
     { "extra-curated-config", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &content_configs_strv, "Add an extra yaml file with which to configure the app browser" },
     /* Here for backwards compat */
@@ -507,6 +511,13 @@ bz_application_command_line (GApplication            *app,
       g_autoptr (DexFuture) init                = NULL;
 
       self->running = TRUE;
+      self->no_window_refresh = no_window_refresh;
+
+      if (self->no_window_refresh)
+        {
+          self->holding_for_no_window_refresh = TRUE;
+          g_application_hold (G_APPLICATION (self));
+        }
 
       blocklists      = gtk_string_list_new (NULL);
       txt_blocklists  = gtk_string_list_new (NULL);
@@ -552,9 +563,9 @@ bz_application_command_line (GApplication            *app,
       dex_future_disown (g_steal_pointer (&init));
     }
 
-  if ((locations == NULL || *locations == NULL) && search_term == NULL)
+  if ((locations == NULL || *locations == NULL) && search_term == NULL && !no_window_refresh)
     new_window (self);
-  else
+  else if (!no_window_refresh)
     get_or_create_window (self);
 
   if (locations != NULL && *locations != NULL)
@@ -2303,6 +2314,12 @@ init_fiber_finally (DexFuture *future,
           bz_state_info_set_syncing (self->state, FALSE);
           dex_promise_resolve_boolean (self->ready_to_open_files, TRUE);
 
+          if (self->holding_for_no_window_refresh)
+            {
+              self->holding_for_no_window_refresh = FALSE;
+              g_application_release (G_APPLICATION (self));
+            }
+
           // Only check for updates if we skipped a full sync.
           dex_future_disown (dex_scheduler_spawn (
               dex_scheduler_get_default (),
@@ -2329,6 +2346,9 @@ init_fiber_finally (DexFuture *future,
 
       bz_state_info_set_online (self->state, FALSE);
       bz_state_info_set_busy (self->state, FALSE);
+
+      g_warning ("Could not initialize: %s", local_error->message);
+
       window = gtk_application_get_active_window (GTK_APPLICATION (self));
       if (window != NULL)
         {
@@ -2338,6 +2358,12 @@ init_fiber_finally (DexFuture *future,
               "Could not initialize: %s",
               local_error->message);
           bz_show_error_for_widget (GTK_WIDGET (window), _ ("An initialization error occurred"), error_string);
+        }
+
+      if (self->holding_for_no_window_refresh)
+        {
+          self->holding_for_no_window_refresh = FALSE;
+          g_application_release (G_APPLICATION (self));
         }
     }
 
@@ -2482,6 +2508,12 @@ sync_finally (DexFuture *future,
         g_get_real_time () / G_USEC_PER_SEC);
 
   dex_promise_resolve_boolean (self->ready_to_open_files, TRUE);
+
+  if (self->holding_for_no_window_refresh)
+    {
+      self->holding_for_no_window_refresh = FALSE;
+      g_application_release (G_APPLICATION (self));
+    }
 
   return dex_future_new_true ();
 }
