@@ -85,7 +85,6 @@ bz_sources = files(
   'bz-context-tile.c',
   'bz-curated-view.c',
   'bz-data-graph.c',
-  'bz-decorated-screenshot.c',
   'bz-developer-badge.c',
   'bz-donations-dialog.c',
   'bz-download-worker.c',
@@ -206,25 +205,6 @@ bz_deps = [
 ]
 
 
-vala_deps = [
-  gtk_dep,
-  libadwaita_dep,
-]
-vala_sources = files(
-  'bz-themed-rect.vala',
-)
-
-bz_vala_static = static_library(
-  'bzvala', vala_sources,
-  dependencies: vala_deps,
-  vala_header: 'bzvala.h',
-)
-bz_vala_dep = declare_dependency(
-  link_with: bz_vala_static,
-  dependencies: [vala_deps],
-)
-bz_deps += [bz_vala_dep]
-
 gen_gobject = find_program('./gen_gobject.sh')
 gen_gobject_header = generator(
   gen_gobject,
@@ -295,16 +275,49 @@ gobject_specs = files(
 )
 
 gen_gobject_srcs = []
+gen_gobject_headers = []
 foreach f : gobject_specs
   header = gen_gobject_header.process(f)
   code = gen_gobject_code.process(f)
   gen_gobject_srcs += [header, code]
+  gen_gobject_headers += [header]
 endforeach
 
+gen_gobjects_static = static_library(
+  'bzgengobjects', gen_gobject_srcs,
+  dependencies: bz_deps,
+)
 generated_gobjects = declare_dependency(
-  sources: gen_gobject_srcs,
+  link_with: gen_gobjects_static,
+  sources: gen_gobject_headers,
 )
 bz_deps += [ generated_gobjects ]
+
+
+vala_deps = [
+  generated_gobjects,
+  gtk_dep,
+  libadwaita_dep,
+  libdex_dep,
+]
+vala_sources = files(
+  'bz.vapi',
+
+  'bz-decorated-screenshot.vala',
+  'bz-themed-rect.vala',
+)
+
+bz_vala_static = static_library(
+  'bzvala', vala_sources,
+  dependencies: vala_deps,
+  vala_header: 'bzvala.h',
+)
+bz_vala_dep = declare_dependency(
+  link_with: bz_vala_static,
+  dependencies: [vala_deps],
+)
+bz_deps += [bz_vala_dep]
+
 
 blueprints = custom_target('blueprints',
   input: files(

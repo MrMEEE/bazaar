@@ -28,13 +28,13 @@
 
 #include <adwaita.h>
 #include <bge.h>
+#include <bzvala.h>
 #include <glib/gi18n.h>
 
-#include "bz-decorated-screenshot.h"
-#include "bz-screenshots-carousel.h"
 #include "bz-screenshot-page.h"
-#include "template-callbacks.h"
+#include "bz-screenshots-carousel.h"
 #include "bz-window.h"
+#include "template-callbacks.h"
 
 #define LIGHT_CLASS          "screenshot-carousel-light"
 #define DARK_CLASS           "screenshot-carousel-dark"
@@ -94,11 +94,11 @@ update_button_visibility (BzScreenshotsCarousel *self)
   n_pages  = g_list_model_get_n_items (G_LIST_MODEL (self->selection));
 
   if (n_pages == 0)
-  {
-    gtk_revealer_set_reveal_child (GTK_REVEALER (self->prev_button_revealer), FALSE);
-    gtk_revealer_set_reveal_child (GTK_REVEALER (self->next_button_revealer), FALSE);
-    return;
-  }
+    {
+      gtk_revealer_set_reveal_child (GTK_REVEALER (self->prev_button_revealer), FALSE);
+      gtk_revealer_set_reveal_child (GTK_REVEALER (self->next_button_revealer), FALSE);
+      return;
+    }
 
   gtk_revealer_set_reveal_child (GTK_REVEALER (self->prev_button_revealer), position >= 0.5);
   gtk_revealer_set_reveal_child (GTK_REVEALER (self->next_button_revealer), position < n_pages - 1.5);
@@ -185,7 +185,8 @@ open_screenshot_at_index (BzScreenshotsCarousel *self, guint index)
 }
 
 static void
-on_screenshot_clicked (BzDecoratedScreenshot *screenshot, BzScreenshotsCarousel *self)
+on_screenshot_clicked (BzDecoratedScreenshot *screenshot,
+                       BzScreenshotsCarousel *self)
 {
   BzAsyncTexture *async_texture = NULL;
   guint           index         = 0;
@@ -299,7 +300,8 @@ on_create_widget (BzScreenshotsCarousel *self,
   if (self->captions != NULL && index < g_list_model_get_n_items (self->captions))
     {
       g_autoptr (GtkStringObject) caption_obj = NULL;
-      caption_obj =  g_list_model_get_item (self->captions, index);
+
+      caption_obj = g_list_model_get_item (self->captions, index);
       if (caption_obj != NULL)
         shot_caption = gtk_string_object_get_string (caption_obj);
     }
