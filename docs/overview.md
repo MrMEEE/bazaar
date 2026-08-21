@@ -56,6 +56,16 @@ To avoid spawning an initial window, use:
 bazaar-daemon --no-window
 ```
 
+To refresh remotes in the background without ever opening a window, and quit
+automatically once the refresh finishes, use:
+
+```
+bazaar-daemon --no-window-refresh
+```
+Running this automatically in the background after the first boot of the OS
+makes it so the user doesn't have to wait for the initial cache/remote sync
+ when they open Bazaar for the first time, saving around 10s of waiting.
+
 ## Comptime Configuration
 
 The only compile time meson option you should concern yourself with for
