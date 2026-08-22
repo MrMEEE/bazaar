@@ -25,8 +25,8 @@
 
 #include "bz-app-permissions.h"
 #include "bz-context-row.h"
-#include "safety-calculator.h"
 #include "bz-safety-row.h"
+#include "safety-calculator.h"
 
 static char *
 format_bus_policy_title (const BzBusPolicy *bus_policy);

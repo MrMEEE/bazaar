@@ -165,9 +165,9 @@ get_install_remove_tooltip (gpointer object,
                             int      removable)
 {
   if (removable > 0)
-    return g_strdup (C_("Install Controls", "Uninstall"));
+    return g_strdup (C_ ("Install Controls", "Uninstall"));
   else
-    return g_strdup (C_("Install Controls", "Install"));
+    return g_strdup (C_ ("Install Controls", "Install"));
 }
 
 static char *
@@ -192,10 +192,10 @@ switch_bool (gpointer object,
 static void
 bz_addon_tile_realize (GtkWidget *widget)
 {
-  BzAddonTile *self          = BZ_ADDON_TILE (widget);
-  GtkWidget   *parent        = widget;
-  GtkWidget   *source        = NULL;
-  const char  *prop          = NULL;
+  BzAddonTile *self   = BZ_ADDON_TILE (widget);
+  GtkWidget   *parent = widget;
+  GtkWidget   *source = NULL;
+  const char  *prop   = NULL;
 
   GTK_WIDGET_CLASS (bz_addon_tile_parent_class)->realize (widget);
 
@@ -220,7 +220,7 @@ bz_addon_tile_realize (GtkWidget *widget)
 
   g_object_bind_property (
       source, prop,
-      self,   "parent-ui-entry",
+      self, "parent-ui-entry",
       G_BINDING_SYNC_CREATE);
 }
 

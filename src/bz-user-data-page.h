@@ -33,6 +33,6 @@ bz_user_data_page_new (BzStateInfo *state);
 
 void
 bz_user_data_page_remove_group (BzUserDataPage *self,
-                                BzEntryGroup    *group);
+                                BzEntryGroup   *group);
 
 G_END_DECLS

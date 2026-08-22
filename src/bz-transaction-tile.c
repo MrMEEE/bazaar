@@ -24,13 +24,13 @@
 #include "bz-entry-group.h"
 #include "bz-entry.h"
 #include "bz-error-dialog.h"
-#include "error.h"
 #include "bz-flatpak-entry.h"
 #include "bz-list-tile.h"
 #include "bz-state-info.h"
-#include "template-callbacks.h"
 #include "bz-transaction-tile.h"
 #include "bz-window.h"
+#include "error.h"
+#include "template-callbacks.h"
 
 struct _BzTransactionTile
 {

@@ -25,9 +25,9 @@
 #include "bz-library-page.h"
 #include "bz-search-bar.h"
 #include "bz-section-view.h"
-#include "template-callbacks.h"
 #include "bz-transaction-tile.h"
 #include "bz-updates-card.h"
+#include "template-callbacks.h"
 #include "util.h"
 
 struct _BzLibraryPage

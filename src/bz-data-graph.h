@@ -71,7 +71,7 @@ bz_data_graph_set_dependent_decimals (BzDataGraph *self,
 const char *bz_data_graph_get_tooltip_prefix (BzDataGraph *self);
 
 void bz_data_graph_set_tooltip_prefix (BzDataGraph *self,
-                                       const char *tooltip_prefix);
+                                       const char  *tooltip_prefix);
 
 void
 bz_data_graph_set_transition_progress (BzDataGraph *self,
@@ -81,4 +81,3 @@ void
 bz_data_graph_animate_open (BzDataGraph *self);
 
 G_END_DECLS
-

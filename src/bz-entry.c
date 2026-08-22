@@ -31,15 +31,15 @@
 #include "bz-country-data-point.h"
 #include "bz-data-point.h"
 #include "bz-entry.h"
-#include "env.h"
-#include "global-net.h"
-#include "io.h"
 #include "bz-release.h"
 #include "bz-repository.h"
 #include "bz-serializable.h"
 #include "bz-url.h"
-#include "util.h"
 #include "bz-verification-status.h"
+#include "env.h"
+#include "global-net.h"
+#include "io.h"
+#include "util.h"
 
 G_DEFINE_FLAGS_TYPE (
     BzEntryKind,
@@ -2424,7 +2424,7 @@ query_flathub (BzEntry *self,
                       prop == PROP_DOWNLOAD_STATS_PER_COUNTRY ||
                       prop == PROP_RECENT_DOWNLOADS ||
                       prop == PROP_TOTAL_DOWNLOADS);
-  is_similar_apps = (prop == PROP_SIMILAR_APPS);
+  is_similar_apps  = (prop == PROP_SIMILAR_APPS);
 
   if (!is_download_stat && !is_similar_apps && !priv->is_flathub)
     return;

@@ -28,11 +28,11 @@
 #include "bz-appstream-parser.h"
 #include "bz-async-texture.h"
 #include "bz-category-flags.h"
-#include "io.h"
+#include "bz-flatpak-entry.h"
 #include "bz-release.h"
 #include "bz-url.h"
 #include "bz-verification-status.h"
-#include "bz-flatpak-entry.h"
+#include "io.h"
 
 static guint
 parse_control_value (const char *value)
@@ -95,8 +95,10 @@ proxy_screenshot_url (const char *url, gboolean high_quality)
 
   for (char *p = encoded_url; *p; p++)
     {
-      if (*p == '+') *p = '-';
-      if (*p == '/') *p = '_';
+      if (*p == '+')
+        *p = '-';
+      if (*p == '/')
+        *p = '_';
     }
 
   return g_strdup_printf (
@@ -168,8 +170,8 @@ find_screenshot (GPtrArray  *images,
     {
       g_autoptr (GFile) screenshot_file = NULL;
       g_autoptr (GFile) cache_file      = NULL;
-      g_autofree char  *proxied_url     = NULL;
-      BzAsyncTexture *texture           = NULL;
+      g_autofree char *proxied_url      = NULL;
+      BzAsyncTexture  *texture          = NULL;
 
       proxied_url     = proxy_screenshot_url (best_url, match_highest);
       screenshot_file = g_file_new_for_uri (proxied_url);
@@ -242,7 +244,7 @@ bz_appstream_parser_populate_entry (BzEntry     *entry,
   g_autoptr (AsContentRating) content_rating           = NULL;
   GPtrArray *as_keywords                               = NULL;
   g_autoptr (GListStore) keywords                      = NULL;
-  GPtrArray *as_categories                             = NULL;
+  GPtrArray      *as_categories                        = NULL;
   BzCategoryFlags categories                           = BZ_CATEGORY_FLAGS_NONE;
   g_autoptr (BzVerificationStatus) verification_status = NULL;
 
@@ -364,8 +366,8 @@ bz_appstream_parser_populate_entry (BzEntry     *entry,
   if (g_strcmp0 (remote_name, "flathub") == 0 &&
       g_list_model_get_n_items (G_LIST_MODEL (share_urls)) % 2 != 0)
     {
-      g_autofree char  *manifest_url = NULL;
-      g_autoptr (BzUrl) url          = NULL;
+      g_autofree char *manifest_url = NULL;
+      g_autoptr (BzUrl) url         = NULL;
 
       manifest_url = g_strdup_printf ("https://github.com/flathub/%s", id);
       url          = g_object_new (BZ_TYPE_URL, "id", "manifest", "url", manifest_url, NULL);
@@ -631,7 +633,7 @@ bz_appstream_parser_populate_entry (BzEntry     *entry,
         {
           const char *name = NULL;
 
-          name = g_ptr_array_index (as_categories, i);
+          name       = g_ptr_array_index (as_categories, i);
           categories = bz_category_flags_add (categories, name);
         }
     }
@@ -725,13 +727,13 @@ bz_appstream_parser_entry_from_metainfo (GFile   *metainfo_file,
                                          GError **error)
 {
   g_autoptr (AsMetadata) mdata  = as_metadata_new ();
-  AsComponent *component        = NULL;
+  AsComponent     *component    = NULL;
   g_autofree char *xml_contents = NULL;
   g_autofree char *xml_path     = NULL;
   g_autofree char *xml_dir      = NULL;
   g_autofree char *module_dir   = NULL;
   g_autofree char *checksum     = NULL;
-  gsize xml_length              = 0;
+  gsize            xml_length   = 0;
   g_autoptr (BzEntry) entry     = NULL;
 
   g_return_val_if_fail (G_IS_FILE (metainfo_file), NULL);

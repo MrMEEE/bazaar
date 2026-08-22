@@ -24,13 +24,13 @@
 
 #include "bz-entry-group-util.h"
 #include "bz-entry-group.h"
-#include "env.h"
-#include "error.h"
 #include "bz-favorites-page.h"
 #include "bz-favorites-tile.h"
-#include "global-net.h"
 #include "bz-state-info.h"
 #include "bz-window.h"
+#include "env.h"
+#include "error.h"
+#include "global-net.h"
 
 struct _BzFavoritesTile
 {
@@ -38,12 +38,12 @@ struct _BzFavoritesTile
 
   BzEntryGroup *group;
 
-  GtkLabel   *title_label;
-  GtkLabel   *description_label;
-  GtkButton  *install_remove_button;
-  GtkButton  *support_button;
-  GtkButton  *unfavorite_button;
-  GtkStack   *unfavorite_stack;
+  GtkLabel  *title_label;
+  GtkLabel  *description_label;
+  GtkButton *install_remove_button;
+  GtkButton *support_button;
+  GtkButton *unfavorite_button;
+  GtkStack  *unfavorite_stack;
 };
 
 G_DEFINE_FINAL_TYPE (BzFavoritesTile, bz_favorites_tile, BZ_TYPE_LIST_TILE)
@@ -152,9 +152,9 @@ get_install_remove_tooltip (gpointer object,
                             int      removable)
 {
   if (removable > 0)
-    return g_strdup (C_("Install Controls", "Uninstall"));
+    return g_strdup (C_ ("Install Controls", "Uninstall"));
   else
-    return g_strdup (C_("Install Controls", "Install"));
+    return g_strdup (C_ ("Install Controls", "Install"));
 }
 
 static char *
@@ -350,7 +350,7 @@ unfavorite_fiber (BzFavoritesTile *tile)
       gtk_stack_set_visible_child_name (tile->unfavorite_stack, "button");
       window = gtk_widget_get_ancestor (GTK_WIDGET (tile), GTK_TYPE_WINDOW);
       if (window != NULL)
-        bz_show_error_for_widget (window, _("Failed to remove favorite"), local_error->message);
+        bz_show_error_for_widget (window, _ ("Failed to remove favorite"), local_error->message);
     }
   else
     {

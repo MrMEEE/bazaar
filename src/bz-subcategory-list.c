@@ -25,8 +25,8 @@
 #include "bz-flathub-state.h"
 #include "bz-flathub-sub-category.h"
 #include "bz-subcategory-list.h"
-#include "util.h"
 #include "bz-window.h"
+#include "util.h"
 
 struct _BzSubcategoryList
 {
@@ -49,7 +49,6 @@ enum
 };
 
 static GParamSpec *props[LAST_PROP] = { 0 };
-
 
 static DexFuture *
 search_finally (DexFuture *future,
@@ -108,12 +107,12 @@ search_finally (DexFuture *future,
 
 static void
 subcategory_button_clicked_cb (BzSubcategoryList *self,
-                                GtkButton         *button)
+                               GtkButton         *button)
 {
-  g_autoptr (DexFuture) future    = NULL;
-  const char            *category = NULL;
-  const char            *label    = NULL;
-  g_autofree char       *route    = NULL;
+  g_autoptr (DexFuture) future = NULL;
+  const char      *category    = NULL;
+  const char      *label       = NULL;
+  g_autofree char *route       = NULL;
 
   g_return_if_fail (BZ_IS_SUBCATEGORY_LIST (self));
   g_return_if_fail (GTK_IS_BUTTON (button));
@@ -151,9 +150,9 @@ subcategory_button_clicked_cb (BzSubcategoryList *self,
 static void
 rebuild_subcategories (BzSubcategoryList *self)
 {
-  GtkWidget *child;
+  GtkWidget  *child;
   GListModel *subcategories;
-  guint      n_items;
+  guint       n_items;
 
   dex_clear (&self->task);
 
@@ -186,18 +185,18 @@ rebuild_subcategories (BzSubcategoryList *self)
   for (guint i = 0; i < n_items; i++)
     {
       g_autoptr (BzFlathubSubCategory) subcategory = NULL;
-      const char                    *label      = NULL;
-      const char                    *subcat_id  = NULL;
-      const char                    *category   = NULL;
-      g_autofree char               *route      = NULL;
-      GtkWidget                     *button     = NULL;
+      const char      *label                       = NULL;
+      const char      *subcat_id                   = NULL;
+      const char      *category                    = NULL;
+      g_autofree char *route                       = NULL;
+      GtkWidget       *button                      = NULL;
 
       subcategory = g_list_model_get_item (subcategories, i);
       if (subcategory == NULL)
         continue;
 
-      label     = bz_flathub_sub_category_get_name(subcategory);
-      subcat_id = bz_flathub_sub_category_get_id(subcategory);
+      label     = bz_flathub_sub_category_get_name (subcategory);
+      subcat_id = bz_flathub_sub_category_get_id (subcategory);
       category  = bz_flathub_category_get_name (self->category);
 
       route = g_strdup_printf ("/collection/category/%s/subcategories?subcategory=%s",

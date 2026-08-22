@@ -24,7 +24,7 @@
 
 G_BEGIN_DECLS
 
-#define BZ_TYPE_LIST_TILE (bz_list_tile_get_type())
+#define BZ_TYPE_LIST_TILE (bz_list_tile_get_type ())
 
 G_DECLARE_DERIVABLE_TYPE (BzListTile, bz_list_tile, BZ, LIST_TILE, GtkWidget)
 
@@ -33,11 +33,11 @@ struct _BzListTileClass
   GtkWidgetClass parent_class;
 };
 
-BzListTile *bz_list_tile_new       (void);
+BzListTile *bz_list_tile_new (void);
 
-GtkWidget  *bz_list_tile_get_child (BzListTile *self);
+GtkWidget *bz_list_tile_get_child (BzListTile *self);
 
-void        bz_list_tile_set_child (BzListTile *self,
-                                    GtkWidget  *child);
+void bz_list_tile_set_child (BzListTile *self,
+                             GtkWidget  *child);
 
 G_END_DECLS

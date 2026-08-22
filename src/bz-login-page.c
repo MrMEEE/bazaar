@@ -25,8 +25,8 @@
 
 #include "bz-auth-state.h"
 #include "bz-flathub-auth-provider.h"
-#include "global-net.h"
 #include "bz-login-page.h"
+#include "global-net.h"
 #include "template-callbacks.h"
 #include "util.h"
 

@@ -25,11 +25,11 @@
 #include "config.h"
 
 #include "bz-entry-inspector.h"
-#include "env.h"
 #include "bz-inspector.h"
 #include "bz-serializable.h"
-#include "template-callbacks.h"
 #include "bz-window.h"
+#include "env.h"
+#include "template-callbacks.h"
 
 struct _BzInspector
 {
@@ -245,7 +245,7 @@ open_file_externally_cb (GtkListItem *list_item,
 #if defined(DEVELOPMENT_BUILD) && defined(SANDBOXED_LIBFLATPAK)
   {
     const char *argv[] = { "flatpak-spawn", "--host", "xdg-open", NULL, NULL };
-    argv[3] = path;
+    argv[3]            = path;
 
     g_spawn_async (NULL, (char **) argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL);
   }

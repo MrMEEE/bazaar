@@ -26,8 +26,8 @@
 #include "bz-entry.h"
 #include "bz-license-dialog.h"
 #include "bz-lozenge.h"
-#include "spdx.h"
 #include "bz-url.h"
+#include "spdx.h"
 
 struct _BzLicenseDialog
 {
@@ -251,7 +251,7 @@ static char *
 get_eula_url (BzEntry *entry)
 {
   g_autofree char *license = NULL;
-  const char *url = NULL;
+  const char      *url     = NULL;
 
   if (entry == NULL)
     return NULL;
@@ -347,8 +347,8 @@ bz_license_dialog_new (BzEntry *entry)
 
   description = get_label_cb (NULL, entry);
   gtk_accessible_update_property (GTK_ACCESSIBLE (dialog),
-                                   GTK_ACCESSIBLE_PROPERTY_DESCRIPTION, description,
-                                   -1);
+                                  GTK_ACCESSIBLE_PROPERTY_DESCRIPTION, description,
+                                  -1);
 
   return dialog;
 }

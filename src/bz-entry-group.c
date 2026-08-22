@@ -22,9 +22,9 @@
 #define BAZAAR_MODULE "entry-group"
 
 #include "bz-entry-group.h"
+#include "bz-size-result.h"
 #include "env.h"
 #include "io.h"
-#include "bz-size-result.h"
 #include "util.h"
 
 typedef enum
@@ -1047,8 +1047,8 @@ bz_entry_group_add (BzEntryGroup *self,
           gtk_string_list_remove (self->unique_ids, existing);
           gtk_string_list_remove (self->installed_versions, existing);
         }
-      gtk_string_list_splice (self->unique_ids, 0, 0, (const char *const[]) { unique_id, NULL });
-      gtk_string_list_splice (self->installed_versions, 0, 0, (const char *const[]) { installed_version != NULL ? installed_version : "", NULL });
+      gtk_string_list_splice (self->unique_ids, 0, 0, (const char *const[]){ unique_id, NULL });
+      gtk_string_list_splice (self->installed_versions, 0, 0, (const char *const[]){ installed_version != NULL ? installed_version : "", NULL });
 
       if (title != NULL)
         {
@@ -1309,7 +1309,7 @@ installed_changed (BzEntryGroup *self,
   state_flags = g_array_index (self->state_flags, gint32, index);
 
   gtk_string_list_splice (self->installed_versions, index, 1,
-                          (const char *const[]) {
+                          (const char *const[]){
                               version != NULL ? version : "",
                               NULL });
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_INSTALLED_VERSIONS]);
@@ -1877,7 +1877,7 @@ bz_entry_group_reconcile_with_installed_set (BzEntryGroup *self,
                                              GHashTable   *installed_set)
 {
   g_autoptr (GMutexLocker) locker = NULL;
-  guint n_ids                     = 0;
+  guint    n_ids                  = 0;
   gboolean any_installed          = FALSE;
 
   g_return_val_if_fail (BZ_IS_ENTRY_GROUP (self), FALSE);

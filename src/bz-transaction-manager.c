@@ -765,9 +765,9 @@ transaction_fiber (QueuedScheduleData *data)
 
   if (errored != NULL && g_hash_table_size (errored) > 0)
     {
-      GHashTableIter  errored_iter = { 0 };
-      gpointer        key          = NULL;
-      gpointer        val          = NULL;
+      GHashTableIter errored_iter = { 0 };
+      gpointer       key          = NULL;
+      gpointer       val          = NULL;
 
       g_hash_table_iter_init (&errored_iter, errored);
       g_hash_table_iter_next (&errored_iter, &key, &val);
@@ -809,7 +809,7 @@ transaction_finally (DexFuture          *future,
   self->current_progress = 1.0;
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_CURRENT_PROGRESS]);
 
-  bz_transaction_notify_finished(transaction, value != NULL);
+  bz_transaction_notify_finished (transaction, value != NULL);
 
   if (value != NULL)
     {
