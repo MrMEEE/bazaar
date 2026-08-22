@@ -23,14 +23,14 @@
 #include "bz-addons-dialog.h"
 #include "bz-entry-group-util.h"
 #include "bz-entry-group.h"
-#include "env.h"
-#include "error.h"
 #include "bz-installed-tile.h"
 #include "bz-library-page.h"
 #include "bz-state-info.h"
-#include "bz-transact-icon.h"
 #include "bz-transact-icon-info.h"
+#include "bz-transact-icon.h"
 #include "bz-window.h"
+#include "env.h"
+#include "error.h"
 
 struct _BzInstalledTile
 {
@@ -38,9 +38,9 @@ struct _BzInstalledTile
 
   BzEntryGroup *group;
 
-  GtkLabel   *title_label;
-  GtkButton  *support_button;
-  GtkButton  *remove_button;
+  GtkLabel  *title_label;
+  GtkButton *support_button;
+  GtkButton *remove_button;
 };
 
 G_DEFINE_FINAL_TYPE (BzInstalledTile, bz_installed_tile, BZ_TYPE_LIST_TILE)
@@ -272,7 +272,7 @@ bz_installed_tile_class_init (BzInstalledTileClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, permissions_cb);
 
   gtk_widget_class_install_action (widget_class, "installed-tile.install-addons", NULL,
-                                 (GtkWidgetActionActivateFunc) install_addons_cb);
+                                   (GtkWidgetActionActivateFunc) install_addons_cb);
   gtk_widget_class_install_action (widget_class, "installed-tile.permissions", NULL,
                                    (GtkWidgetActionActivateFunc) permissions_cb);
 

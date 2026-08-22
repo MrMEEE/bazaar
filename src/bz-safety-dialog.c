@@ -26,9 +26,9 @@
 #include "bz-context-row.h"
 #include "bz-entry.h"
 #include "bz-lozenge.h"
-#include "safety-calculator.h"
 #include "bz-safety-dialog.h"
 #include "bz-safety-row.h"
+#include "safety-calculator.h"
 #include "template-callbacks.h"
 
 #define ANIMATION_DURATION 300
@@ -217,8 +217,8 @@ next_page (BzSafetyDialog *self,
   page = gtk_widget_get_last_child (GTK_WIDGET (self->carousel));
 
   gtk_accessible_announce (GTK_ACCESSIBLE (self),
-                         bz_lozenge_get_title (self->lozenge),
-                         GTK_ACCESSIBLE_ANNOUNCEMENT_PRIORITY_MEDIUM);
+                           bz_lozenge_get_title (self->lozenge),
+                           GTK_ACCESSIBLE_ANNOUNCEMENT_PRIORITY_MEDIUM);
 
   adw_carousel_scroll_to (self->carousel, page, TRUE);
   animate_to_page (self, 1);
@@ -230,7 +230,7 @@ is_page (gpointer object,
          gint     target)
 {
   return fabs (position - (gdouble) target) < 0.5 ||
-        fabs (position - round (position)) > 0.01;
+         fabs (position - round (position)) > 0.01;
 }
 
 static void
@@ -285,7 +285,7 @@ bz_safety_dialog_new (BzEntry *entry)
   AdwAnimationTarget *height_target = NULL;
   g_autofree char    *description   = NULL;
 
-  widget = g_object_new (BZ_TYPE_SAFETY_DIALOG, NULL);
+  widget              = g_object_new (BZ_TYPE_SAFETY_DIALOG, NULL);
   widget->owns_dialog = TRUE;
 
   dialog = adw_dialog_new ();

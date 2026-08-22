@@ -31,10 +31,10 @@
 #include "bz-application.h"
 #include "bz-appstream-parser.h"
 #include "bz-flatpak-private.h"
-#include "io.h"
 #include "bz-result.h"
 #include "bz-serializable.h"
 #include "bz-state-info.h"
+#include "io.h"
 
 #define VERSION_SUFFIX_REGEX "\\s+[0-9][0-9.]*\\s*$"
 

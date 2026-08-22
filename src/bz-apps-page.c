@@ -27,20 +27,20 @@
 #include "bz-apps-page.h"
 #include "bz-dynamic-list-view.h"
 #include "bz-entry-group.h"
-#include "env.h"
 #include "bz-flathub-category.h"
-#include "bz-subcategory-list.h"
 #include "bz-state-info.h"
+#include "bz-subcategory-list.h"
+#include "env.h"
 
 struct _BzAppsPage
 {
   AdwNavigationPage parent_instance;
 
-  char       *title;
-  GListModel *applications;
-  GListModel *all_applications;
-  GListModel *carousel_applications;
-  char       *subtitle;
+  char              *title;
+  GListModel        *applications;
+  GListModel        *all_applications;
+  GListModel        *carousel_applications;
+  char              *subtitle;
   BzFlathubCategory *category;
 
   /* Template widgets */
@@ -108,7 +108,7 @@ bz_apps_page_get_property (GObject    *object,
       g_value_set_object (value, self->category);
       break;
     case PROP_FLATHUB_STATE:
-      g_value_set_object (value, bz_state_info_get_flathub(bz_state_info_get_default ()));
+      g_value_set_object (value, bz_state_info_get_flathub (bz_state_info_get_default ()));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -211,7 +211,7 @@ show_all_cb (BzAppsPage *self,
   if (nav_view == NULL)
     return;
 
-  all_title = g_strdup_printf (_("All \"%s\""), self->title);
+  all_title = g_strdup_printf (_ ("All \"%s\""), self->title);
   all_page  = bz_all_apps_page_new (all_title, self->all_applications);
   if (all_page == NULL)
     return;
@@ -463,7 +463,7 @@ bz_apps_page_new_from_category (BzFlathubCategory *category)
       bz_apps_page_set_subtitle (BZ_APPS_PAGE (apps_page), subtitle);
     }
 
-  BZ_APPS_PAGE(apps_page)->category = g_object_ref (category);
+  BZ_APPS_PAGE (apps_page)->category = g_object_ref (category);
   g_object_notify_by_pspec (G_OBJECT (apps_page), props[PROP_CATEGORY]);
 
   if (n_items <= 48)

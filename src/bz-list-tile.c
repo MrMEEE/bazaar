@@ -27,7 +27,8 @@ typedef struct
 
 G_DEFINE_TYPE_WITH_PRIVATE (BzListTile, bz_list_tile, GTK_TYPE_WIDGET)
 
-enum {
+enum
+{
   PROP_0,
   PROP_CHILD,
   LAST_PROP
@@ -41,7 +42,9 @@ enum
   LAST_SIGNAL
 };
 
-static guint signals[LAST_SIGNAL] = { 0, };
+static guint signals[LAST_SIGNAL] = {
+  0,
+};
 
 static void
 on_gesture_click_released (BzListTile      *self,
@@ -89,7 +92,7 @@ bz_list_tile_set_property (GObject      *object,
 static void
 bz_list_tile_dispose (GObject *object)
 {
-  BzListTile *self = BZ_LIST_TILE (object);
+  BzListTile        *self = BZ_LIST_TILE (object);
   BzListTilePrivate *priv = bz_list_tile_get_instance_private (self);
 
   g_clear_pointer (&priv->child, gtk_widget_unparent);
@@ -105,7 +108,7 @@ bz_list_tile_class_init (BzListTileClass *klass)
 
   object_class->get_property = bz_list_tile_get_property;
   object_class->set_property = bz_list_tile_set_property;
-  object_class->dispose = bz_list_tile_dispose;
+  object_class->dispose      = bz_list_tile_dispose;
 
   /**
    * BzListTile:child:
@@ -113,9 +116,9 @@ bz_list_tile_class_init (BzListTileClass *klass)
    * The child widget.
    */
   props[PROP_CHILD] =
-    g_param_spec_object ("child", NULL, NULL,
-                         GTK_TYPE_WIDGET,
-                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+      g_param_spec_object ("child", NULL, NULL,
+                           GTK_TYPE_WIDGET,
+                           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class, LAST_PROP, props);
 
@@ -135,7 +138,7 @@ bz_list_tile_class_init (BzListTileClass *klass)
 
   {
     g_autoptr (GtkShortcutAction) activate_action = NULL;
-    const guint activate_keyvals[] = {
+    const guint activate_keyvals[]                = {
       GDK_KEY_space,
       GDK_KEY_KP_Space,
       GDK_KEY_Return,

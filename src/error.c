@@ -24,8 +24,8 @@
 #include <glib/gi18n.h>
 
 #include "bz-error-dialog.h"
-#include "error.h"
 #include "bz-window.h"
+#include "error.h"
 
 static void
 show_alert (GtkWidget  *widget,

@@ -189,8 +189,8 @@ void
 bz_flathub_curated_section_set_selection (BzFlathubCuratedSection   *self,
                                           BzFlathubCuratedSelection *selection)
 {
-  const char       *theme_key = NULL;
-  const char       *slot      = NULL;
+  const char      *theme_key = NULL;
+  const char      *slot      = NULL;
   const ThemeInfo *info      = NULL;
 
   g_return_if_fail (BZ_IS_FLATHUB_CURATED_SECTION (self));

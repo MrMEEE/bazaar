@@ -28,26 +28,26 @@
 #include "bz-curated-view.h"
 #include "bz-entry-group-util.h"
 #include "bz-entry-group.h"
-#include "env.h"
-#include "error.h"
 #include "bz-flathub-page.h"
 #include "bz-flatpak-entry.h"
 #include "bz-full-view.h"
-#include "hooks.h"
-#include "io.h"
 #include "bz-library-page.h"
 #include "bz-progress-bar.h"
 #include "bz-screenshot-page.h"
 #include "bz-search-bar.h"
 #include "bz-search-page.h"
-#include "template-callbacks.h"
 #include "bz-transaction-dialog.h"
 #include "bz-transaction-manager.h"
 #include "bz-update-history-data-point.h"
 #include "bz-update-history-dialog.h"
 #include "bz-user-data-page.h"
-#include "util.h"
 #include "bz-window.h"
+#include "env.h"
+#include "error.h"
+#include "hooks.h"
+#include "io.h"
+#include "template-callbacks.h"
+#include "util.h"
 
 struct _BzWindow
 {
@@ -145,7 +145,6 @@ set_page (BzWindow *self);
 static BzFullView *
 create_full_view (BzWindow     *self,
                   BzEntryGroup *group);
-
 
 static void
 emit_hook_disown (BzWindow     *self,
@@ -393,13 +392,13 @@ drop_accept_cb (BzWindow      *self,
 
 static gboolean
 drop_cb (BzWindow      *self,
-        const GValue  *value,
-        double         x,
-        double         y,
-        GtkDropTarget *target)
+         const GValue  *value,
+         double         x,
+         double         y,
+         GtkDropTarget *target)
 {
-  GFile            *file = NULL;
-  g_autofree char  *uri  = NULL;
+  GFile           *file = NULL;
+  g_autofree char *uri  = NULL;
 
   file = G_FILE (g_value_get_object (value));
   uri  = g_file_get_uri (file);
@@ -501,7 +500,7 @@ parent_ui_entry_show_group_cb (BzAddonsDialog *dialog,
                                GParamSpec     *pspec,
                                BzWindow       *self)
 {
-  BzEntry                 *entry = NULL;
+  BzEntry *entry                 = NULL;
   g_autoptr (BzEntryGroup) group = NULL;
 
   entry = bz_addons_dialog_get_parent_entry (dialog);
@@ -867,7 +866,7 @@ key_pressed (BzWindow              *self,
   g_unichar_to_utf8 (unichar, buf);
 
   was_deeper = g_list_model_get_n_items (
-      adw_navigation_view_get_navigation_stack (self->navigation_view)) > 1;
+                   adw_navigation_view_get_navigation_stack (self->navigation_view)) > 1;
 
   adw_navigation_view_pop_to_tag (self->navigation_view, "main");
 
@@ -898,7 +897,7 @@ bz_window_init (BzWindow *self)
                             G_CALLBACK (key_pressed),
                             self);
   gtk_widget_add_controller (GTK_WIDGET (self), self->key_controller);
-  gtk_drop_target_set_gtypes (self->drop_target, (GType[]) { G_TYPE_FILE }, 1);
+  gtk_drop_target_set_gtypes (self->drop_target, (GType[]){ G_TYPE_FILE }, 1);
 }
 
 static void
@@ -934,7 +933,6 @@ transact_fiber (TransactData *data)
   GdkDevice       *keyboard             = NULL;
   GdkModifierType  modifiers            = GDK_NO_MODIFIER_MASK;
 
-
   // Get ID early before any async operations
   if (data->group != NULL)
     id_dup = g_strdup (bz_entry_group_get_id (data->group));
@@ -950,7 +948,7 @@ transact_fiber (TransactData *data)
       if (g_strcmp0 (id_dup, bazaar_id) == 0)
         {
           GtkWidget *window = NULL;
-          window = GTK_WIDGET (gtk_application_get_active_window (GTK_APPLICATION (g_application_get_default ())));
+          window            = GTK_WIDGET (gtk_application_get_active_window (GTK_APPLICATION (g_application_get_default ())));
           bz_show_error_for_widget (window, _ ("You can't remove Bazaar from Bazaar!"), _ ("You can't remove Bazaar from Bazaar!"));
           return dex_future_new_false ();
         }

@@ -27,10 +27,10 @@
 #include "bz-curated-article.h"
 #include "bz-curated-articles-info.h"
 #include "bz-dynamic-list-view.h"
-#include "env.h"
-#include "global-net.h"
 #include "bz-parser.h"
 #include "bz-yaml-parser.h"
+#include "env.h"
+#include "global-net.h"
 
 struct _BzArticleListView
 {

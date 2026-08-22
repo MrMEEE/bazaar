@@ -510,7 +510,7 @@ bz_application_command_line (GApplication            *app,
       g_autoptr (GtkStringList) content_configs = NULL;
       g_autoptr (DexFuture) init                = NULL;
 
-      self->running = TRUE;
+      self->running           = TRUE;
       self->no_window_refresh = no_window_refresh;
 
       if (self->no_window_refresh)
@@ -687,10 +687,10 @@ bz_application_open_location_action (GSimpleAction *action,
                                      GVariant      *parameter,
                                      gpointer       user_data)
 {
-  BzApplication *self         = user_data;
-  const char    *uri          = NULL;
-  g_autoptr (GFile) file      = NULL;
-  g_autofree char *basename   = NULL;
+  BzApplication *self       = user_data;
+  const char    *uri        = NULL;
+  g_autoptr (GFile) file    = NULL;
+  g_autofree char *basename = NULL;
 
   g_assert (BZ_IS_APPLICATION (self));
 

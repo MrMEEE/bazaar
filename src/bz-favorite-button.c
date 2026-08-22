@@ -24,11 +24,11 @@
 #include <json-glib/json-glib.h>
 
 #include "bz-entry.h"
+#include "bz-favorite-button.h"
+#include "bz-state-info.h"
 #include "env.h"
 #include "error.h"
-#include "bz-favorite-button.h"
 #include "global-net.h"
-#include "bz-state-info.h"
 
 struct _BzFavoriteButton
 {

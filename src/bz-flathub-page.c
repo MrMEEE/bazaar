@@ -161,7 +161,6 @@ get_curated_selection_by_slot (gpointer    object,
   return NULL;
 }
 
-
 static void
 show_more_mobile_cb (BzFlathubPage *self,
                      GtkButton     *button)

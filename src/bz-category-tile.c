@@ -21,7 +21,7 @@
 
 struct _BzCategoryTile
 {
-  GtkButton parent_instance;
+  GtkButton          parent_instance;
   BzFlathubCategory *category;
 };
 
@@ -47,9 +47,9 @@ bz_category_tile_dispose (GObject *object)
 }
 
 static void
-bz_category_tile_get_property (GObject *object,
-                               guint prop_id,
-                               GValue *value,
+bz_category_tile_get_property (GObject    *object,
+                               guint       prop_id,
+                               GValue     *value,
                                GParamSpec *pspec)
 {
   BzCategoryTile *self = BZ_CATEGORY_TILE (object);
@@ -65,10 +65,10 @@ bz_category_tile_get_property (GObject *object,
 }
 
 static void
-bz_category_tile_set_property (GObject *object,
-                               guint prop_id,
+bz_category_tile_set_property (GObject      *object,
+                               guint         prop_id,
                                const GValue *value,
-                               GParamSpec *pspec)
+                               GParamSpec   *pspec)
 {
   BzCategoryTile *self = BZ_CATEGORY_TILE (object);
 
@@ -99,19 +99,19 @@ invert_boolean (gpointer object,
 static void
 bz_category_tile_class_init (BzCategoryTileClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   object_class->set_property = bz_category_tile_set_property;
   object_class->get_property = bz_category_tile_get_property;
-  object_class->dispose = bz_category_tile_dispose;
+  object_class->dispose      = bz_category_tile_dispose;
 
   props[PROP_CATEGORY] =
-    g_param_spec_object (
-      "category",
-      NULL, NULL,
-      BZ_TYPE_FLATHUB_CATEGORY,
-      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
+      g_param_spec_object (
+          "category",
+          NULL, NULL,
+          BZ_TYPE_FLATHUB_CATEGORY,
+          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (object_class, LAST_PROP, props);
 
@@ -143,10 +143,10 @@ bz_category_tile_get_category (BzCategoryTile *self)
 }
 
 void
-bz_category_tile_set_category (BzCategoryTile *self,
+bz_category_tile_set_category (BzCategoryTile    *self,
                                BzFlathubCategory *category)
 {
-  const char *category_name;
+  const char      *category_name;
   g_autofree char *css_class = NULL;
 
   g_return_if_fail (BZ_IS_CATEGORY_TILE (self));
@@ -156,12 +156,12 @@ bz_category_tile_set_category (BzCategoryTile *self,
   if (category != NULL)
     {
       self->category = g_object_ref (category);
-      
+
       category_name = bz_flathub_category_get_name (category);
       if (category_name != NULL)
         {
           g_autofree char *lowercase_name = g_ascii_strdown (category_name, -1);
-          css_class = g_strdup_printf ("category-%s", lowercase_name);
+          css_class                       = g_strdup_printf ("category-%s", lowercase_name);
           g_strdelimit (css_class, " &/", '-');
           gtk_widget_add_css_class (GTK_WIDGET (self), css_class);
         }

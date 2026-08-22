@@ -36,7 +36,7 @@ typedef enum
 
 #define BZ_TYPE_HIGH_RISK_GROUP (bz_high_risk_group_get_type ())
 
-GListModel  *
+GListModel *
 bz_safety_calculator_analyze_entry (BzEntry *entry);
 
 BzImportance

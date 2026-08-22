@@ -28,7 +28,6 @@
 #include "bz-application-map-factory.h"
 #include "bz-application.h"
 #include "bz-appstream-description-render.h"
-#include "context-tile-callbacks.h"
 #include "bz-context-tile.h"
 #include "bz-entry-group.h"
 #include "bz-fading-clamp.h"
@@ -39,6 +38,7 @@
 #include "bz-share-list.h"
 #include "bz-state-info.h"
 #include "bz-stats-dialog.h"
+#include "context-tile-callbacks.h"
 #include "template-callbacks.h"
 #include "util.h"
 
@@ -294,7 +294,7 @@ bz_addons_dialog_new (BzEntryGroup *group)
 
   if (groups == NULL || g_list_model_get_n_items (groups) == 0)
     adw_navigation_view_replace (self->navigation_view,
-                                 (AdwNavigationPage *[]) { adw_navigation_view_find_page (self->navigation_view, "empty") },
+                                 (AdwNavigationPage *[]){ adw_navigation_view_find_page (self->navigation_view, "empty") },
                                  1);
   else if (g_list_model_get_n_items (groups) == 1)
     {
@@ -478,12 +478,12 @@ animate_to_size (BzAddonsDialog *self)
     return;
 
   if (!self->has_mapped)
-  {
-    self->has_mapped = TRUE;
-    adw_dialog_set_content_width (ADW_DIALOG (self), target_width);
-    adw_dialog_set_content_height (ADW_DIALOG (self), target_height);
-    return;
-  }
+    {
+      self->has_mapped = TRUE;
+      adw_dialog_set_content_width (ADW_DIALOG (self), target_width);
+      adw_dialog_set_content_height (ADW_DIALOG (self), target_height);
+      return;
+    }
 
   cur_w   = adw_dialog_get_content_width (ADW_DIALOG (self));
   cur_h   = adw_dialog_get_content_height (ADW_DIALOG (self));

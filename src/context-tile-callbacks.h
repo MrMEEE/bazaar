@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <gtk/gtk.h>
 #include "safety-calculator.h"
+#include <gtk/gtk.h>
 
 void
 bz_widget_class_bind_all_context_tile_callbacks (GtkWidgetClass *widget_class);

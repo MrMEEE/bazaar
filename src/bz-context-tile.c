@@ -29,8 +29,8 @@ struct _BzContextTile
 
   /* Template widgets */
   GtkButton *ring_button;
-  GtkBox   *lozenge;
-  GtkLabel *label;
+  GtkBox    *lozenge;
+  GtkLabel  *label;
 };
 
 G_DEFINE_FINAL_TYPE (BzContextTile, bz_context_tile, GTK_TYPE_BUTTON)

@@ -23,8 +23,8 @@
 #include <gtk/gtk.h>
 #include <math.h>
 
-#include "context-tile-callbacks.h"
 #include "bz-entry.h"
+#include "context-tile-callbacks.h"
 #include "safety-calculator.h"
 #include "spdx.h"
 

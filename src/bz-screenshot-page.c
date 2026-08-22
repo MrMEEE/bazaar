@@ -94,11 +94,11 @@ static BzZoom *get_current_zoom (BzScreenshotPage   *self,
 
 static void populate_carousel (BzScreenshotPage *self);
 
-static void     on_button_pressed (GtkGestureClick  *gesture,
-                                   int               n_press,
-                                   double            x,
-                                   double            y,
-                                   BzScreenshotPage *self);
+static void on_button_pressed (GtkGestureClick  *gesture,
+                               int               n_press,
+                               double            x,
+                               double            y,
+                               BzScreenshotPage *self);
 
 static void on_swipe (BzScreenshotPage *self,
                       gdouble           vel_x,

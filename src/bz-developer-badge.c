@@ -158,7 +158,7 @@ get_developer_link (gpointer              object,
   if (entry == NULL || !BZ_IS_ENTRY (entry))
     return NULL;
 
-  dev         = bz_entry_get_developer (entry);
+  dev = bz_entry_get_developer (entry);
   if (dev == NULL)
     return NULL;
 
@@ -188,7 +188,7 @@ get_developer_link (gpointer              object,
     }
 
   if (g_strcmp0 (method, "website") == 0 && website != NULL && *website != '\0')
-      return g_strdup_printf ("<a href='https://%s' title='https://%s'>%s</a>", website, website, escaped_dev);
+    return g_strdup_printf ("<a href='https://%s' title='https://%s'>%s</a>", website, website, escaped_dev);
 
   return g_steal_pointer (&escaped_dev);
 }

@@ -55,28 +55,28 @@ typedef struct
 } UrlInfo;
 
 static const UrlInfo url_info[] = {
-  {     "flathub",    NC_ ("Project URL Type",    "Flathub Page"),       "flathub-symbolic" },
-  {    "homepage",    NC_ ("Project URL Type", "Project Website"),         "globe-symbolic" },
-  {  "bugtracker",    NC_ ("Project URL Type",   "Issue Tracker"), "computer-fail-symbolic" },
-  {         "faq",    NC_ ("Project URL Type",             "FAQ"),      "help-faq-symbolic" },
-  {        "help",    NC_ ("Project URL Type",            "Help"),  "help-browser-symbolic" },
-  {    "donation",    NC_ ("Project URL Type",          "Donate"),  "heart-filled-symbolic" },
-  {   "translate",    NC_ ("Project URL Type",       "Translate"),  "translations-symbolic" },
-  {     "contact",    NC_ ("Project URL Type",         "Contact"),     "mail-send-symbolic" },
-  { "vcs-browser",    NC_ ("Project URL Type",     "Source Code"),          "code-symbolic" },
-  {  "contribute",    NC_ ("Project URL Type",      "Contribute"),  "system-users-symbolic" },
-  {    "manifest",    NC_ ("Project URL Type",        "Manifest"),      "shoe-box-symbolic" },
-  {          NULL,                         NULL,                                       NULL }
+  { "flathub", NC_ ("Project URL Type", "Flathub Page"), "flathub-symbolic" },
+  { "homepage", NC_ ("Project URL Type", "Project Website"), "globe-symbolic" },
+  { "bugtracker", NC_ ("Project URL Type", "Issue Tracker"), "computer-fail-symbolic" },
+  { "faq", NC_ ("Project URL Type", "FAQ"), "help-faq-symbolic" },
+  { "help", NC_ ("Project URL Type", "Help"), "help-browser-symbolic" },
+  { "donation", NC_ ("Project URL Type", "Donate"), "heart-filled-symbolic" },
+  { "translate", NC_ ("Project URL Type", "Translate"), "translations-symbolic" },
+  { "contact", NC_ ("Project URL Type", "Contact"), "mail-send-symbolic" },
+  { "vcs-browser", NC_ ("Project URL Type", "Source Code"), "code-symbolic" },
+  { "contribute", NC_ ("Project URL Type", "Contribute"), "system-users-symbolic" },
+  { "manifest", NC_ ("Project URL Type", "Manifest"), "shoe-box-symbolic" },
+  { NULL, NULL, NULL }
 };
 
-static void           populate_urls (BzShareList *self);
-static GtkListBox    *create_list_box (void);
-static AdwActionRow  *create_url_action_row (BzShareList *self,
-                                             BzUrl       *url_item);
-static void           copy_cb (BzShareList *self,
-                               GtkButton   *button);
-static void           follow_link_cb (BzShareList *self,
-                                      GtkWidget   *widget);
+static void          populate_urls (BzShareList *self);
+static GtkListBox   *create_list_box (void);
+static AdwActionRow *create_url_action_row (BzShareList *self,
+                                            BzUrl       *url_item);
+static void          copy_cb (BzShareList *self,
+                              GtkButton   *button);
+static void          follow_link_cb (BzShareList *self,
+                                     GtkWidget   *widget);
 
 static void
 bz_share_list_dispose (GObject *object)

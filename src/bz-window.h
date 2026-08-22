@@ -22,8 +22,8 @@
 
 #include <adwaita.h>
 
-#include "bz-state-info.h"
 #include "bz-screenshot-page.h"
+#include "bz-state-info.h"
 
 G_BEGIN_DECLS
 

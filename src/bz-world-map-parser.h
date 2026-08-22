@@ -28,10 +28,10 @@ G_BEGIN_DECLS
 
 G_DECLARE_FINAL_TYPE (BzWorldMapParser, bz_world_map_parser, BZ, WORLD_MAP_PARSER, GObject)
 
-BzWorldMapParser *bz_world_map_parser_new                (void);
-gboolean          bz_world_map_parser_load_from_resource (BzWorldMapParser  *self,
-                                                          const char        *resource_path,
-                                                          GError           **error);
-GListModel       *bz_world_map_parser_get_countries       (BzWorldMapParser  *self);
+BzWorldMapParser *bz_world_map_parser_new (void);
+gboolean          bz_world_map_parser_load_from_resource (BzWorldMapParser *self,
+                                                          const char       *resource_path,
+                                                          GError          **error);
+GListModel       *bz_world_map_parser_get_countries (BzWorldMapParser *self);
 
 G_END_DECLS

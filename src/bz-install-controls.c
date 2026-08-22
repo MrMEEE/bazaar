@@ -26,9 +26,9 @@
 
 #include "bz-install-controls.h"
 #include "bz-state-info.h"
+#include "progress-bar-designs/common.h"
 #include "template-callbacks.h"
 #include "util.h"
-#include "progress-bar-designs/common.h"
 
 struct _BzInstallControls
 {
@@ -635,9 +635,9 @@ bz_install_controls_set_entry_group (BzInstallControls *self,
     {
       g_autofree char *label = NULL;
       if (title != NULL && developer != NULL)
-        label = g_strdup_printf (_("Install %s from %s"), title, developer);
+        label = g_strdup_printf (_ ("Install %s from %s"), title, developer);
       else if (title != NULL)
-        label = g_strdup_printf (_("Install %s"), title);
+        label = g_strdup_printf (_ ("Install %s"), title);
 
       if (label != NULL)
         gtk_accessible_update_property (

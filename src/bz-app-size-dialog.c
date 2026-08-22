@@ -20,8 +20,8 @@
 
 #include "bz-app-size-dialog.h"
 #include "bz-entry-group.h"
-#include "io.h"
 #include "bz-lozenge.h"
+#include "io.h"
 #include "template-callbacks.h"
 
 #include <glib/gi18n.h>
@@ -108,7 +108,7 @@ format_size (gpointer object,
   char            *space    = NULL;
 
   if (value == 0 && use_fallback)
-    return g_strdup (_("N/A"));
+    return g_strdup (_ ("N/A"));
 
   size_str = g_format_size (value);
   space    = g_strrstr (size_str, "\xC2\xA0");
@@ -192,7 +192,7 @@ bz_app_size_dialog_new (BzEntryGroup *group)
 
   dialog = adw_dialog_new ();
   adw_dialog_set_content_width (dialog, 600);
-  adw_dialog_set_title (dialog, _("Storage"));
+  adw_dialog_set_title (dialog, _ ("Storage"));
   adw_dialog_set_child (dialog, GTK_WIDGET (widget));
 
   return dialog;

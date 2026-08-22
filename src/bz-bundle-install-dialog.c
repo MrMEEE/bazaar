@@ -26,13 +26,13 @@
 #include "bz-application.h"
 #include "bz-async-texture.h"
 #include "bz-bundle-install-dialog.h"
-#include "context-tile-callbacks.h"
-#include "env.h"
 #include "bz-flatpak-repo.h"
 #include "bz-release.h"
-#include "safety-calculator.h"
 #include "bz-safety-dialog.h"
 #include "bz-state-info.h"
+#include "context-tile-callbacks.h"
+#include "env.h"
+#include "safety-calculator.h"
 #include "template-callbacks.h"
 #include "util.h"
 
@@ -536,8 +536,8 @@ install_fiber (GWeakRef *wr)
   g_autoptr (GError) local_error              = NULL;
   g_autoptr (BzTransaction) transaction       = NULL;
   g_autoptr (BzTransactionManager) ts_manager = NULL;
-  gboolean            success                 = FALSE;
-  g_autofree char    *error_message           = NULL;
+  gboolean         success                    = FALSE;
+  g_autofree char *error_message              = NULL;
 
   bz_weak_get_or_return_reject (self, wr);
 

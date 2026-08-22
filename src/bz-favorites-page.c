@@ -24,10 +24,10 @@
 #include <json-glib/json-glib.h>
 
 #include "bz-application-map-factory.h"
-#include "env.h"
-#include "error.h"
 #include "bz-favorites-page.h"
 #include "bz-favorites-tile.h"
+#include "env.h"
+#include "error.h"
 #include "global-net.h"
 #include "io.h"
 #include "util.h"
@@ -230,7 +230,7 @@ install_all_cb (BzFavoritesPage *self,
                 GtkButton       *button)
 {
   GVariantBuilder builder = G_VARIANT_BUILDER_INIT (G_VARIANT_TYPE ("as"));
-  guint n_items           = 0;
+  guint           n_items = 0;
 
   g_return_if_fail (BZ_IS_FAVORITES_PAGE (self));
 

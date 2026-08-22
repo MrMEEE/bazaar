@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <gtk/gtk.h>
 #include "bz-flathub-category.h"
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

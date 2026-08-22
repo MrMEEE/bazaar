@@ -143,9 +143,9 @@ browse_flathub_cb (BzCuratedView *self,
 
 static void
 bind_cb (BzCuratedView     *self,
-        BzDynamicListView  *widget,
-        GObject            *object,
-        BzDynamicListView  *list_view)
+         BzDynamicListView *widget,
+         GObject           *object,
+         BzDynamicListView *list_view)
 {
   bz_dynamic_list_view_set_noscroll_kind (widget, BZ_DYNAMIC_LIST_VIEW_KIND_VBOX);
   bz_dynamic_list_view_set_child_type (widget, "BzRowView");
@@ -154,9 +154,9 @@ bind_cb (BzCuratedView     *self,
 
 static void
 unbind_cb (BzCuratedView     *self,
-          BzDynamicListView  *widget,
-          GObject            *object,
-          BzDynamicListView  *list_view)
+           BzDynamicListView *widget,
+           GObject           *object,
+           BzDynamicListView *list_view)
 {
   bz_dynamic_list_view_set_model (widget, NULL);
 }

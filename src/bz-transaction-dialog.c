@@ -24,13 +24,13 @@
 
 #include "bz-application.h"
 #include "bz-entry-selection-row.h"
-#include "env.h"
-#include "error.h"
 #include "bz-flatpak-entry.h"
-#include "safety-calculator.h"
 #include "bz-state-info.h"
 #include "bz-transaction-dialog.h"
 #include "bz-transaction-list-dialog.h"
+#include "env.h"
+#include "error.h"
+#include "safety-calculator.h"
 #include "util.h"
 
 static gboolean

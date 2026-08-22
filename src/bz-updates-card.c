@@ -25,8 +25,8 @@
 #include "bz-entry.h"
 #include "bz-release.h"
 #include "bz-releases-list.h"
-#include "template-callbacks.h"
 #include "bz-updates-card.h"
+#include "template-callbacks.h"
 
 struct _BzUpdatesCard
 {
@@ -265,7 +265,7 @@ repopulate_expander_row (BzUpdatesCard *self)
   on_runtimes_changed (self->runtimes_filter_model, 0, 0, 0, self);
 
   if (!self->has_closed)
-      adw_expander_row_set_expanded (self->expander_row, n_items <= 3);
+    adw_expander_row_set_expanded (self->expander_row, n_items <= 3);
 }
 
 static void

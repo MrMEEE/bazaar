@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <gtk/gtk.h>
 #include <gio/gio.h>
+#include <gtk/gtk.h>
 #include <libdex.h>
 
 G_BEGIN_DECLS
@@ -35,9 +35,9 @@ bz_async_texture_new (GFile *source,
 
 BzAsyncTexture *
 bz_async_texture_new_with_size (GFile *source,
-                                 GFile *cache_into,
-                                 int    width,
-                                 int    height);
+                                GFile *cache_into,
+                                int    width,
+                                int    height);
 
 BzAsyncTexture *
 bz_async_texture_new_lazy (GFile *source,
