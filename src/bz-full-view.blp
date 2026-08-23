@@ -23,17 +23,7 @@ template $BzFullView: Adw.Bin {
     }
 
     content: Adw.ViewStack stack {
-      enable-transitions: true;
-
-      Adw.ViewStackPage {
-        name: "empty";
-
-        child: Adw.StatusPage {
-          icon-name: "sad-computer-symbolic";
-          title: _("No Results");
-          description: _("Try a different search query");
-        };
-      }
+      enable-transitions: false;
 
       Adw.ViewStackPage {
         name: "loading";
