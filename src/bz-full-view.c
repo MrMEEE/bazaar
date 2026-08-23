@@ -797,6 +797,9 @@ bz_full_view_set_entry_group (BzFullView   *self,
   if (group == self->group)
     return;
 
+  if (group == NULL)
+    return;
+
   dex_clear (&self->ui_future);
   g_clear_object (&self->group);
   g_clear_object (&self->ui_entry);
@@ -804,56 +807,51 @@ bz_full_view_set_entry_group (BzFullView   *self,
   g_clear_object (&self->group_model);
   gtk_toggle_button_set_active (self->description_toggle, FALSE);
 
-  if (group != NULL)
+  self->group    = g_object_ref (group);
+  self->ui_entry = bz_entry_group_dup_ui_entry (group);
+
+  if (self->ui_entry != NULL && bz_result_get_resolved (self->ui_entry))
     {
-      self->group    = g_object_ref (group);
-      self->ui_entry = bz_entry_group_dup_ui_entry (group);
+      BzEntry *entry                      = NULL;
+      g_autoptr (GListStore) store        = NULL;
+      g_autoptr (DexFuture) future        = NULL;
+      g_autoptr (DexFuture) object_future = NULL;
+      GWeakRef *wr                        = NULL;
 
-      if (self->ui_entry != NULL && bz_result_get_resolved (self->ui_entry))
-        {
-          BzEntry *entry                      = NULL;
-          g_autoptr (GListStore) store        = NULL;
-          g_autoptr (DexFuture) future        = NULL;
-          g_autoptr (DexFuture) object_future = NULL;
-          GWeakRef *wr                        = NULL;
+      entry = bz_result_get_object (self->ui_entry);
+      store = g_list_store_new (BZ_TYPE_ENTRY);
+      g_list_store_append (store, entry);
 
-          entry = bz_result_get_object (self->ui_entry);
-          store = g_list_store_new (BZ_TYPE_ENTRY);
-          g_list_store_append (store, entry);
+      future            = dex_future_new_for_object (store);
+      self->group_model = bz_result_new (future);
 
-          future            = dex_future_new_for_object (store);
-          self->group_model = bz_result_new (future);
-
-          object_future = dex_future_new_for_object (entry);
-          wr            = bz_track_weak (self);
-          dex_unref (on_ui_entry_resolved (object_future, wr));
-          bz_weak_release (wr);
-        }
-      else
-        {
-          g_autoptr (DexFuture) future = NULL;
-
-          future            = bz_entry_group_dup_all_into_store (group);
-          self->group_model = bz_result_new (future);
-
-          if (self->ui_entry != NULL)
-            {
-              g_autoptr (DexFuture) ui_future = NULL;
-
-              adw_view_stack_set_visible_child_name (self->stack, "loading");
-
-              ui_future = bz_result_dup_future (self->ui_entry);
-              ui_future = dex_future_then (
-                  ui_future,
-                  (DexFutureCallback) on_ui_entry_resolved,
-                  bz_track_weak (self),
-                  bz_weak_release);
-              self->ui_future = g_steal_pointer (&ui_future);
-            }
-        }
+      object_future = dex_future_new_for_object (entry);
+      wr            = bz_track_weak (self);
+      dex_unref (on_ui_entry_resolved (object_future, wr));
+      bz_weak_release (wr);
     }
   else
-    adw_view_stack_set_visible_child_name (self->stack, "empty");
+    {
+      g_autoptr (DexFuture) future = NULL;
+
+      future            = bz_entry_group_dup_all_into_store (group);
+      self->group_model = bz_result_new (future);
+
+      if (self->ui_entry != NULL)
+        {
+          g_autoptr (DexFuture) ui_future = NULL;
+
+          adw_view_stack_set_visible_child_name (self->stack, "loading");
+
+          ui_future = bz_result_dup_future (self->ui_entry);
+          ui_future = dex_future_then (
+              ui_future,
+              (DexFutureCallback) on_ui_entry_resolved,
+              bz_track_weak (self),
+              bz_weak_release);
+          self->ui_future = g_steal_pointer (&ui_future);
+        }
+    }
 
   gtk_adjustment_set_value (gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (self->main_scroll)), 0.0);
 
