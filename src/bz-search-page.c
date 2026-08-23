@@ -864,13 +864,11 @@ update_filter (BzSearchPage *self,
   self->current_query = bz_finished_search_query_new ();
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_CURRENT_QUERY]);
 
-  bz_search_bar_set_busy (self->search_bar, FALSE);
-
   if (self->state == NULL)
-    return;
+    goto idle;
   engine = bz_state_info_get_search_engine (self->state);
   if (engine == NULL)
-    return;
+    goto idle;
 
   search_text = gtk_editable_get_text (GTK_EDITABLE (self->search_bar));
 
@@ -878,7 +876,7 @@ update_filter (BzSearchPage *self,
     {
       g_list_store_remove_all (self->search_model);
       gtk_stack_set_visible_child_name (self->search_stack, "empty");
-      return;
+      goto idle;
     }
 
   builder = g_strv_builder_new ();
@@ -899,7 +897,7 @@ update_filter (BzSearchPage *self,
     {
       g_list_store_remove_all (self->search_model);
       gtk_stack_set_visible_child_name (self->search_stack, "empty");
-      return;
+      goto idle;
     }
 
   terms = g_strv_builder_end (builder);
@@ -918,6 +916,10 @@ update_filter (BzSearchPage *self,
       (DexFutureCallback) search_query_then,
       bz_track_weak (self), bz_weak_release);
   self->search_query = g_steal_pointer (&future);
+  return;
+
+idle:
+  bz_search_bar_set_busy (self->search_bar, FALSE);
 }
 
 static void
