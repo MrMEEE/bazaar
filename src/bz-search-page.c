@@ -103,11 +103,6 @@ search_query_then (DexFuture *future,
 static void
 update_filter (BzSearchPage *self);
 
-static void
-emit_idx (BzSearchPage *self,
-          GListModel   *model,
-          guint         selected_idx);
-
 static gboolean
 bz_search_page_grab_focus (GtkWidget *widget)
 {
@@ -681,10 +676,11 @@ grid_activate (GtkGridView  *grid_view,
                guint         position,
                BzSearchPage *self)
 {
-  GtkSelectionModel *model = NULL;
+  g_autoptr (BzSearchResult) result = NULL;
 
-  model = gtk_grid_view_get_model (self->grid_view);
-  emit_idx (self, G_LIST_MODEL (model), position);
+  result = g_list_model_get_item (G_LIST_MODEL (gtk_grid_view_get_model (grid_view)), position);
+  gtk_widget_activate_action (GTK_WIDGET (self), "window.show-group", "(sb)",
+                              bz_entry_group_get_id (bz_search_result_get_group (result)), TRUE);
 }
 
 static void
@@ -871,19 +867,4 @@ update_filter (BzSearchPage *self)
       (DexFutureCallback) search_query_then,
       bz_track_weak (self), bz_weak_release);
   self->search_query = g_steal_pointer (&future);
-}
-
-static void
-emit_idx (BzSearchPage *self,
-          GListModel   *model,
-          guint         selected_idx)
-{
-  g_autoptr (BzSearchResult) result = NULL;
-  BzEntryGroup *group               = NULL;
-
-  result = g_list_model_get_item (G_LIST_MODEL (model), selected_idx);
-  group  = bz_search_result_get_group (result);
-
-  gtk_widget_activate_action (GTK_WIDGET (self), "window.show-group", "(sb)",
-                              bz_entry_group_get_id (group), TRUE);
 }
