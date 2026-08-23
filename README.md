@@ -41,6 +41,16 @@ Pre-built binaries are distributed via Flathub:
 
 <a href='https://flathub.org/apps/details/io.github.kolunmi.Bazaar'><img width='240' alt='Get it on Flathub' src='https://flathub.org/api/badge?svg&locale=en'/></a>
 
+You can also beta-test Bazaar using the gnome-nightly flatpak repository:
+```sh
+flatpak remote-add --if-not-exists gnome-nightly https://nightly.gnome.org/gnome-nightly.flatpakrepo
+```
+
+Then:
+```sh
+flatpak install gnome-nightly io.github.kolunmi.Bazaar
+```
+
 There also exist packages for [Debian](https://tracker.debian.org/pkg/bazaar)
 and [Arch](https://archlinux.org/packages/extra/x86_64/bazaar/). These are not
 directly supported but should work fine. If you encounter a bug on any package
