@@ -285,6 +285,9 @@ metadata_setting_changed (BzApplication *self,
                           const char    *key,
                           GSettings     *settings);
 
+static void
+update_flathub_login_action_enabled (BzApplication *self);
+
 static gboolean
 window_close_request (BzApplication *self,
                       GtkWidget     *window);
@@ -803,6 +806,9 @@ bz_application_flathub_login_action (GSimpleAction *action,
   AdwNavigationPage *login_page = NULL;
 
   g_assert (BZ_IS_APPLICATION (self));
+
+  if (g_settings_get_boolean (self->settings, "hide-flathub-login"))
+    return;
 
   window = gtk_application_get_active_window (GTK_APPLICATION (self));
 
@@ -2342,10 +2348,13 @@ init_fiber_finally (DexFuture *future,
 
       bz_malcontent_service_start (self->malcontent);
 
-      g_object_bind_property (
-          bz_state_info_get_auth_state (self->state), "authenticated",
-          g_action_map_lookup_action (G_ACTION_MAP (self), "flathub-login"), "enabled",
-          G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
+      update_flathub_login_action_enabled (self);
+      g_signal_connect_swapped (
+          bz_state_info_get_auth_state (self->state), "notify::authenticated",
+          G_CALLBACK (update_flathub_login_action_enabled), self);
+      g_signal_connect_swapped (
+          self->settings, "changed::hide-flathub-login",
+          G_CALLBACK (update_flathub_login_action_enabled), self);
     }
   else
     {
@@ -2997,6 +3006,20 @@ metadata_setting_changed (BzApplication *self,
 
   bz_flathub_state_set_entries (self->flathub, G_LIST_MODEL (self->groups));
   dex_future_disown (bz_flathub_state_update_to_today (self->flathub));
+}
+
+static void
+update_flathub_login_action_enabled (BzApplication *self)
+{
+  gboolean       authenticated = FALSE;
+  gboolean       hidden        = FALSE;
+  GSimpleAction *action        = NULL;
+
+  authenticated = bz_auth_state_is_authenticated (bz_state_info_get_auth_state (self->state));
+  hidden        = g_settings_get_boolean (self->settings, "hide-flathub-login");
+
+  action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (self), "flathub-login"));
+  g_simple_action_set_enabled (action, !authenticated && !hidden);
 }
 
 static gboolean

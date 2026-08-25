@@ -116,6 +116,21 @@ template $BzPreferencesDialog: Adw.PreferencesDialog {
     }
 
     Adw.PreferencesGroup {
+      title: _("Flathub Login");
+
+      Adw.SwitchRow hide_login_switch {
+        title: _("_Hide Flathub Login");
+        subtitle: _("Remove the ability to log in to Flathub and manage favorites");
+        use-underline: true;
+      }
+
+      Adw.EntryRow login_url_entry {
+        title: _("Login URL");
+        sensitive: bind hide_login_switch.active inverted;
+      }
+    }
+
+    Adw.PreferencesGroup {
       title: _("Progress Bar Theme");
 
       Adw.ActionRow {

@@ -109,5 +109,15 @@
       <summary>Disable Metadata Fetching</summary>
       <description>Disable fetching supplemental metadata from the metadata API entirely. Apps and search results will still be populated from enabled Flatpak remotes</description>
     </key>
+    <key name="flathub-login-url" type="s">
+      <default>'https://flathub.org'</default>
+      <summary>Flathub Login URL</summary>
+      <description>Base URL used for logging in to Flathub and managing favorites. Leave empty to use the default Flathub login</description>
+    </key>
+    <key name="hide-flathub-login" type="b">
+      <default>false</default>
+      <summary>Hide Flathub Login</summary>
+      <description>Hide the ability to log in to Flathub, including favorites-related functionality</description>
+    </key>
   </schema>
 </schemalist>

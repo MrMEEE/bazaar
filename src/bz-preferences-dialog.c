@@ -80,6 +80,8 @@ struct _BzPreferencesDialog
   AdwSwitchRow   *hide_eol_switch;
   AdwSwitchRow   *disable_metadata_switch;
   AdwEntryRow    *metadata_api_url_entry;
+  AdwSwitchRow   *hide_login_switch;
+  AdwEntryRow    *login_url_entry;
 
   GtkToggleButton *flag_buttons[G_N_ELEMENTS (bar_themes)];
 };
@@ -223,6 +225,14 @@ bind_settings (BzPreferencesDialog *self)
 
   g_settings_bind (self->settings, "metadata-api-url",
                    self->metadata_api_url_entry, "text",
+                   G_SETTINGS_BIND_DEFAULT);
+
+  g_settings_bind (self->settings, "hide-flathub-login",
+                   self->hide_login_switch, "active",
+                   G_SETTINGS_BIND_DEFAULT);
+
+  g_settings_bind (self->settings, "flathub-login-url",
+                   self->login_url_entry, "text",
                    G_SETTINGS_BIND_DEFAULT);
 
   g_signal_connect_object (
@@ -405,6 +415,8 @@ bz_preferences_dialog_class_init (BzPreferencesDialogClass *klass)
   gtk_widget_class_bind_template_child (widget_class, BzPreferencesDialog, auto_notif_switch);
   gtk_widget_class_bind_template_child (widget_class, BzPreferencesDialog, disable_metadata_switch);
   gtk_widget_class_bind_template_child (widget_class, BzPreferencesDialog, metadata_api_url_entry);
+  gtk_widget_class_bind_template_child (widget_class, BzPreferencesDialog, hide_login_switch);
+  gtk_widget_class_bind_template_child (widget_class, BzPreferencesDialog, login_url_entry);
   gtk_widget_class_bind_template_callback (widget_class, auto_updates_toggled_cb);
 }
 
