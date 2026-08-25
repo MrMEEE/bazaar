@@ -280,6 +280,11 @@ show_hide_app_setting_changed (BzApplication *self,
                                const char    *key,
                                GSettings     *settings);
 
+static void
+metadata_setting_changed (BzApplication *self,
+                          const char    *key,
+                          GSettings     *settings);
+
 static gboolean
 window_close_request (BzApplication *self,
                       GtkWidget     *window);
@@ -2982,6 +2987,17 @@ show_hide_app_setting_changed (BzApplication *self,
   g_object_thaw_notify (G_OBJECT (self->state));
 }
 
+static void
+metadata_setting_changed (BzApplication *self,
+                         const char    *key,
+                         GSettings     *settings)
+{
+  if (self->flathub == NULL)
+    return;
+
+  dex_future_disown (bz_flathub_state_update_to_today (self->flathub));
+}
+
 static gboolean
 window_close_request (BzApplication *self,
                       GtkWidget     *window)
@@ -3625,6 +3641,17 @@ init_service_struct (BzApplication *self,
       self->settings,
       "changed::show-only-verified",
       G_CALLBACK (show_hide_app_setting_changed),
+      self);
+
+  g_signal_connect_swapped (
+      self->settings,
+      "changed::disable-metadata-fetching",
+      G_CALLBACK (metadata_setting_changed),
+      self);
+  g_signal_connect_swapped (
+      self->settings,
+      "changed::metadata-api-url",
+      G_CALLBACK (metadata_setting_changed),
       self);
 
   self->blocklist_regexes = g_ptr_array_new_with_free_func (

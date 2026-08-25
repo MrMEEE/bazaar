@@ -99,5 +99,15 @@
       <default>0</default>
       <summary>timestamp of the last "updates out of date" notification</summary>
     </key>
+    <key name="metadata-api-url" type="s">
+      <default>'https://flathub.org/api/v2'</default>
+      <summary>Metadata API URL</summary>
+      <description>Base URL of the API used to fetch supplemental app metadata (curated picks, categories, stats, favorites). Leave empty to use the default Flathub API.</description>
+    </key>
+    <key name="disable-metadata-fetching" type="b">
+      <default>false</default>
+      <summary>Disable Metadata Fetching</summary>
+      <description>Disable fetching supplemental metadata from the metadata API entirely. Apps and search results will still be populated from enabled Flatpak remotes</description>
+    </key>
   </schema>
 </schemalist>

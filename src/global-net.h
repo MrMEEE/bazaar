@@ -38,6 +38,9 @@ bz_send_with_global_http_session_then_splice_into (SoupMessage   *message,
 DexFuture *
 bz_https_query_json (const char *uri);
 
+gboolean
+bz_metadata_fetching_enabled (void);
+
 DexFuture *
 bz_query_flathub_v2_json (const char *request);
 

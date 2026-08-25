@@ -22,12 +22,47 @@
 
 #include "config.h"
 
+#include <gio/gio.h>
 #include <json-glib/json-glib.h>
 #include <libproxy/proxy.h>
 
 #include "env.h"
 #include "global-net.h"
 #include "util.h"
+
+#define DEFAULT_METADATA_API_URL "https://flathub.org/api/v2"
+
+static GSettings *
+get_net_settings (void)
+{
+  static GSettings *settings = NULL;
+
+  if (g_once_init_enter_pointer (&settings))
+    {
+      GSettings *instance = g_settings_new (APPLICATION_ID);
+      g_once_init_leave_pointer (&settings, instance);
+    }
+
+  return settings;
+}
+
+gboolean
+bz_metadata_fetching_enabled (void)
+{
+  return !g_settings_get_boolean (get_net_settings (), "disable-metadata-fetching");
+}
+
+static char *
+get_metadata_api_base (void)
+{
+  g_autofree char *configured = NULL;
+
+  configured = g_settings_get_string (get_net_settings (), "metadata-api-url");
+  if (configured == NULL || configured[0] == '\0')
+    return g_strdup (DEFAULT_METADATA_API_URL);
+
+  return g_steal_pointer (&configured);
+}
 
 BZ_DEFINE_DATA (
     http_request,
@@ -134,11 +169,18 @@ bz_https_query_json (const char *uri)
 DexFuture *
 bz_query_flathub_v2_json (const char *request)
 {
-  g_autofree char *uri = NULL;
+  g_autofree char *base = NULL;
+  g_autofree char *uri  = NULL;
 
   dex_return_error_if_fail (request != NULL);
 
-  uri = g_strdup_printf ("https://flathub.org/api/v2%s", request);
+  if (!bz_metadata_fetching_enabled ())
+    return dex_future_new_reject (
+        G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+        "Metadata fetching has been disabled in preferences");
+
+  base = get_metadata_api_base ();
+  uri  = g_strdup_printf ("%s%s", base, request);
   return query_uri_json_with_method (uri, SOUP_METHOD_GET, NULL);
 }
 
@@ -159,11 +201,18 @@ DexFuture *
 bz_query_flathub_v2_json_authenticated (const char *request,
                                         const char *token)
 {
-  g_autofree char *uri = NULL;
+  g_autofree char *base = NULL;
+  g_autofree char *uri  = NULL;
 
   dex_return_error_if_fail (request != NULL);
 
-  uri = g_strdup_printf ("https://flathub.org/api/v2%s", request);
+  if (!bz_metadata_fetching_enabled ())
+    return dex_future_new_reject (
+        G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+        "Metadata fetching has been disabled in preferences");
+
+  base = get_metadata_api_base ();
+  uri  = g_strdup_printf ("%s%s", base, request);
   return query_uri_json_with_method (uri, SOUP_METHOD_GET, token);
 }
 
@@ -171,11 +220,18 @@ DexFuture *
 bz_query_flathub_v2_json_authenticated_post (const char *request,
                                              const char *token)
 {
-  g_autofree char *uri = NULL;
+  g_autofree char *base = NULL;
+  g_autofree char *uri  = NULL;
 
   dex_return_error_if_fail (request != NULL);
 
-  uri = g_strdup_printf ("https://flathub.org/api/v2%s", request);
+  if (!bz_metadata_fetching_enabled ())
+    return dex_future_new_reject (
+        G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+        "Metadata fetching has been disabled in preferences");
+
+  base = get_metadata_api_base ();
+  uri  = g_strdup_printf ("%s%s", base, request);
   return query_uri_json_with_method (uri, SOUP_METHOD_POST, token);
 }
 
@@ -183,11 +239,18 @@ DexFuture *
 bz_query_flathub_v2_json_authenticated_delete (const char *request,
                                                const char *token)
 {
-  g_autofree char *uri = NULL;
+  g_autofree char *base = NULL;
+  g_autofree char *uri  = NULL;
 
   dex_return_error_if_fail (request != NULL);
 
-  uri = g_strdup_printf ("https://flathub.org/api/v2%s", request);
+  if (!bz_metadata_fetching_enabled ())
+    return dex_future_new_reject (
+        G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+        "Metadata fetching has been disabled in preferences");
+
+  base = get_metadata_api_base ();
+  uri  = g_strdup_printf ("%s%s", base, request);
   return query_uri_json_with_method (uri, SOUP_METHOD_DELETE, token);
 }
 
