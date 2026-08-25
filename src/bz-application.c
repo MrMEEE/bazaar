@@ -2412,6 +2412,10 @@ backend_sync_finally (DexFuture *future,
     {
       g_autoptr (DexFuture) enum_future = NULL;
 
+      g_list_store_remove_all (self->groups);
+      g_list_store_remove_all (self->installed_apps);
+      g_hash_table_remove_all (self->ids_to_groups);
+
       enum_future = dex_scheduler_spawn (
           dex_scheduler_get_default (),
           bz_get_dex_stack_size (),
@@ -3412,8 +3416,7 @@ init_service_struct (BzApplication *self,
 
           bz_set_metadata_config (
               bz_main_config_get_metadata_api_url (self->config),
-              bz_main_config_get_disable_metadata_fetching (self->config) ||
-                  bz_main_config_get_disable_flathub (self->config));
+              bz_main_config_get_disable_metadata_fetching (self->config));
           bz_set_flathub_login_config (
               bz_main_config_get_flathub_login_url (self->config),
               bz_main_config_get_hide_flathub_login (self->config) ||
