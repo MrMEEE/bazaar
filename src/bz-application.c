@@ -222,6 +222,10 @@ flathub_update_finally (DexFuture *future,
                         BzWeakRef *wr);
 
 static DexFuture *
+start_flathub_sync_after_backend (DexFuture *future,
+                                  BzWeakRef *wr);
+
+static DexFuture *
 cache_write_back_finally (DexFuture *future,
                           BzWeakRef *wr,
                           GPtrArray *notify_groups,
@@ -2441,6 +2445,20 @@ backend_sync_save_groups_finally (DexFuture *future,
 }
 
 static DexFuture *
+start_flathub_sync_after_backend (DexFuture *future,
+                                  BzWeakRef *wr)
+{
+  g_autoptr (BzApplication) self = NULL;
+
+  bz_weak_get_or_return_reject (self, &wr->ref);
+
+  /* self->groups is only fully populated once the backend refresh
+   * subprocess finishes, so the local-remote fallback must wait for it. */
+  bz_flathub_state_set_entries (self->tmp_flathub, G_LIST_MODEL (self->groups));
+  return bz_flathub_state_update_to_today (self->tmp_flathub);
+}
+
+static DexFuture *
 flathub_update_finally (DexFuture *future,
                         BzWeakRef *wr)
 {
@@ -4248,8 +4266,11 @@ make_sync_future (BzApplication *self)
 
   g_clear_object (&self->tmp_flathub);
   self->tmp_flathub = bz_flathub_state_new ();
-  bz_flathub_state_set_entries (self->tmp_flathub, G_LIST_MODEL (self->groups));
-  flathub_future    = bz_flathub_state_update_to_today (self->tmp_flathub);
+  flathub_future    = dex_future_finally (
+      dex_ref (backend_future),
+      (DexFutureCallback) start_flathub_sync_after_backend,
+      bz_weak_ref_new (self),
+      (GDestroyNotify) bz_weak_ref_unref);
   flathub_future    = dex_future_finally (
       flathub_future,
       (DexFutureCallback) flathub_update_finally,

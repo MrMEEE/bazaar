@@ -29,11 +29,9 @@
 #include <libdex.h>
 
 #include "bz-entry-group.h"
-#include "bz-entry.h"
 #include "bz-flathub-category.h"
 #include "bz-flathub-curated-selection.h"
 #include "bz-flathub-state.h"
-#include "bz-result.h"
 #include "bz-serializable.h"
 #include "env.h"
 #include "global-net.h"
@@ -1266,21 +1264,16 @@ populate_categories_from_entries (BzFlathubState *self)
       for (guint i = 0; i < n_entries; i++)
         {
           g_autoptr (BzEntryGroup) group = NULL;
-          g_autoptr (BzResult) result     = NULL;
-          BzEntry *ui_entry               = NULL;
+          const char *id                  = NULL;
 
-          group    = g_list_model_get_item (self->entries_source, i);
-          result   = bz_entry_group_dup_ui_entry (group);
-          if (result == NULL || !bz_result_get_resolved (result))
+          group = g_list_model_get_item (self->entries_source, i);
+          id    = bz_entry_group_get_id (group);
+          if (id == NULL)
             continue;
 
-          ui_entry = bz_result_get_object (result);
-          if (ui_entry == NULL)
-            continue;
-
-          if (bz_entry_get_category_flags (ui_entry) & local_category_map[c].flag)
+          if (bz_entry_group_get_categories (group) & local_category_map[c].flag)
             {
-              gtk_string_list_append (store, bz_entry_get_id (ui_entry));
+              gtk_string_list_append (store, id);
               total++;
             }
         }
