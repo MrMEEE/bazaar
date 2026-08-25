@@ -29,6 +29,19 @@ sudo ninja -C build install
 bazaar
 ```
 
+If your distro's `libdex` package is older than the minimum version required
+(so meson falls back to building the bundled `subprojects/libdex`), and it
+does not ship a Vala binding for `liburing` (e.g. Ubuntu), the build will fail
+with `Package 'liburing' not found in specified Vala API directories`. Work
+around this by building the fallback `libdex` without `liburing` support,
+which just makes it use its POSIX thread-pool I/O backend instead of
+`io_uring`:
+
+```sh
+meson setup build -Dlibdex:liburing=disabled
+ninja -C build
+```
+
 You will need the following dependencies installed, along with a C compiler, meson, and ninja:
 | Dep Name                                                          | `pkg-config` Name | Min Version | Justification                                       |
 |-------------------------------------------------------------------|-------------------|-------------|-----------------------------------------------------|
