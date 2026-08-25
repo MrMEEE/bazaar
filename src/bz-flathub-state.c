@@ -33,6 +33,7 @@
 #include "bz-flathub-category.h"
 #include "bz-flathub-curated-selection.h"
 #include "bz-flathub-state.h"
+#include "bz-result.h"
 #include "bz-serializable.h"
 #include "env.h"
 #include "global-net.h"
@@ -1265,10 +1266,15 @@ populate_categories_from_entries (BzFlathubState *self)
       for (guint i = 0; i < n_entries; i++)
         {
           g_autoptr (BzEntryGroup) group = NULL;
-          g_autoptr (BzEntry) ui_entry    = NULL;
+          g_autoptr (BzResult) result     = NULL;
+          BzEntry *ui_entry               = NULL;
 
           group    = g_list_model_get_item (self->entries_source, i);
-          ui_entry = bz_entry_group_dup_ui_entry (group);
+          result   = bz_entry_group_dup_ui_entry (group);
+          if (result == NULL || !bz_result_get_resolved (result))
+            continue;
+
+          ui_entry = bz_result_get_object (result);
           if (ui_entry == NULL)
             continue;
 
