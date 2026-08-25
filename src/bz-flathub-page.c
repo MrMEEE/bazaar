@@ -343,6 +343,23 @@ show_more_clicked (BzFlathubPage *self,
   adw_navigation_view_push (ADW_NAVIGATION_VIEW (nav_view), apps_page);
 }
 
+static gboolean
+flathub_state_has_content (BzFlathubState *flathub)
+{
+  GListModel *categories = NULL;
+  GListModel *curated    = NULL;
+
+  if (flathub == NULL)
+    return FALSE;
+
+  categories = bz_flathub_state_get_categories (flathub);
+  curated    = bz_flathub_state_get_curated_selections (flathub);
+
+  return (categories != NULL && g_list_model_get_n_items (categories) > 0) ||
+         (curated != NULL && g_list_model_get_n_items (curated) > 0) ||
+         bz_flathub_state_get_app_of_the_day (flathub) != NULL;
+}
+
 static void
 invalidating_state_changed (BzFlathubPage *self,
                             GParamSpec    *pspec,
@@ -358,7 +375,10 @@ invalidating_state_changed (BzFlathubPage *self,
       has_repo = bz_state_info_get_has_flathub (self->state);
     }
 
-  if (flathub != NULL && has_repo)
+  /* Show whatever we have (even if it was only built from local remotes,
+   * e.g. when Flathub itself is unavailable or disabled) rather than
+   * hiding it behind the "not added"/"offline" placeholders. */
+  if (flathub_state_has_content (flathub))
     page = "content";
   else if (!has_repo)
     page = "empty";
