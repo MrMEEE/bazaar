@@ -1,0 +1,56 @@
+name: Build Debian package
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-deb:
+    runs-on: ubuntu-latest
+    container: ubuntu:26.04
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            build-essential \
+            debhelper-compat \
+            dpkg-dev \
+            gettext \
+            libadwaita-1-dev \
+            libappstream-dev \
+            libflatpak-dev \
+            libgirepository1.0-dev \
+            libglycin-2-dev \
+            libglycin-gtk4-2-dev \
+            libgtksourceview-5-dev \
+            libgtk-4-dev \
+            libjson-glib-dev \
+            libmd4c-dev \
+            libproxy-dev \
+            libsecret-1-dev \
+            libsystemd-dev \
+            libwebkitgtk-6.0-dev \
+            libxmlb-dev \
+            libyaml-dev \
+            libsoup-3.0-dev \
+            meson \
+            ninja-build \
+            pkg-config \
+            python3 \
+            valac
+          apt-get install -y blueprint-compiler
+
+      - name: Build package
+        run: dpkg-buildpackage -b -uc -us -d
+
+      - name: Upload Debian package
+        uses: actions/upload-artifact@v4
+        with:
+          name: bazaar-deb-ubuntu-26.04
+          path: ../bazaar_*.deb
+          if-no-files-found: error

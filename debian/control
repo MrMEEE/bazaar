@@ -1,0 +1,40 @@
+Source: bazaar
+Section: gnome
+Priority: optional
+Maintainer: Bazaar Contributors <noreply@example.com>
+Build-Depends: debhelper-compat (= 13),
+               meson,
+               ninja-build,
+               pkg-config,
+               valac,
+               blueprint-compiler (>= 0.20),
+               libgtk-4-dev,
+               libadwaita-1-dev,
+               libsoup-3.0-dev,
+               libwebkitgtk-6.0-dev,
+               libsecret-1-dev,
+               libproxy-dev,
+               libyaml-dev,
+               libxmlb-dev,
+               libmd4c-dev,
+               libgtksourceview-5-dev,
+               libglycin-2-dev,
+               libglycin-gtk4-2-dev,
+               libjson-glib-dev,
+               libappstream-dev,
+               libmalcontent-0-dev,
+               libsystemd-dev,
+               libflatpak-dev,
+               libgirepository1.0-dev,
+               gettext
+Standards-Version: 4.6.2
+Homepage: https://github.com/kolunmi/bazaar
+Rules-Requires-Root: no
+
+Package: bazaar
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}, flatpak
+Description: Vertically-integrated Flatpak app store
+ Bazaar is a fast and modern app store for Linux which focuses on
+ discovering and installing Flatpak apps and add-ons, particularly
+ those distributed via Flathub.

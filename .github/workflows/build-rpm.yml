@@ -1,0 +1,71 @@
+name: Build RPM packages
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-rpm:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [9, 10]
+    runs-on: ubuntu-latest
+    container: quay.io/centos/centos:stream${{ matrix.os }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Enable build repositories
+        run: |
+          dnf install -y dnf-plugins-core epel-release
+          dnf config-manager --set-enabled crb
+
+      - name: Install build dependencies
+        run: |
+          dnf install -y \
+            rpm-build \
+            rpmdevtools \
+            gcc \
+            gettext \
+            meson \
+            ninja-build \
+            pkgconf-pkg-config \
+            vala \
+            blueprint-compiler \
+            gtk4-devel \
+            libadwaita-devel \
+            libdex-devel \
+            flatpak-devel \
+            appstream-devel \
+            libxmlb-devel \
+            glycin-devel \
+            glycin-gtk4-devel \
+            libyaml-devel \
+            libsoup3-devel \
+            json-glib-devel \
+            md4c-devel \
+            gtksourceview5-devel \
+            webkitgtk6.0-devel \
+            libsecret-devel \
+            libproxy-devel \
+            malcontent-devel \
+            systemd-devel
+
+      - name: Create source archive
+        run: git archive --format=tar.gz --prefix=bazaar-0.9.5/ HEAD -o /tmp/bazaar-0.9.5.tar.gz
+
+      - name: Build RPM
+        run: |
+          mkdir -p "$HOME/rpmbuild"/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
+          cp /tmp/bazaar-0.9.5.tar.gz "$HOME/rpmbuild/SOURCES/"
+          cp rpm/bazaar.spec "$HOME/rpmbuild/SPECS/"
+          rpmbuild -ba "$HOME/rpmbuild/SPECS/bazaar.spec"
+
+      - name: Upload RPM packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: bazaar-rpm-rhel${{ matrix.os }}
+          path: /root/rpmbuild/RPMS/**/*.rpm
+          if-no-files-found: error

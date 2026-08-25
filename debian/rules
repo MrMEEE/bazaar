@@ -1,0 +1,21 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@ --buildsystem=meson
+
+override_dh_auto_configure:
+	dh_auto_configure -- -Dlibdex:liburing=disabled -Dlibdex:default_library=static -Dlibdex:introspection=disabled -Dlibdex:vapi=false -Dlibdex:pygobject=false -Dhardcoded_main_config_path=/etc/bazaar/bazaar.yaml
+
+# Only ship the bundled libdex runtime, not its dev files (headers, .pc,
+# vapi, gi overrides), which would clash with the system libdex-dev package.
+override_dh_auto_install:
+	dh_auto_install
+	rm -rf debian/bazaar/usr/include
+	rm -rf debian/bazaar/usr/share/vala
+	rm -rf debian/bazaar/usr/share/gir-1.0
+	rm -rf debian/bazaar/usr/lib/python3
+	rm -rf debian/bazaar/usr/lib/*/girepository-1.0
+	find debian/bazaar/usr/lib/*/pkgconfig -mindepth 1 -delete 2>/dev/null || true
+	find debian/bazaar/usr/lib -maxdepth 1 -name "*.pc" -delete 2>/dev/null || true
+	find debian/bazaar/usr/lib/*/pkgconfig -maxdepth 0 -empty -delete 2>/dev/null || true
+	find debian/bazaar/usr/lib/*/ -maxdepth 1 -name "*.so" -delete 2>/dev/null || true

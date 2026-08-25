@@ -1,0 +1,5 @@
+bazaar (0.9.5-1) UNRELEASED; urgency=medium
+
+  * Local Debian packaging for building/testing outside of Flatpak.
+
+ -- Bazaar Contributors <noreply@example.com>  Tue, 25 Aug 2026 13:30:25 +0200
