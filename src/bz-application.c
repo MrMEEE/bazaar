@@ -2995,6 +2995,7 @@ metadata_setting_changed (BzApplication *self,
   if (self->flathub == NULL)
     return;
 
+  bz_flathub_state_set_entries (self->flathub, G_LIST_MODEL (self->groups));
   dex_future_disown (bz_flathub_state_update_to_today (self->flathub));
 }
 
@@ -4247,6 +4248,7 @@ make_sync_future (BzApplication *self)
 
   g_clear_object (&self->tmp_flathub);
   self->tmp_flathub = bz_flathub_state_new ();
+  bz_flathub_state_set_entries (self->tmp_flathub, G_LIST_MODEL (self->groups));
   flathub_future    = bz_flathub_state_update_to_today (self->tmp_flathub);
   flathub_future    = dex_future_finally (
       flathub_future,

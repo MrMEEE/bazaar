@@ -41,6 +41,10 @@ void
 bz_flathub_state_set_map_factory (BzFlathubState          *self,
                                   BzApplicationMapFactory *map_factory);
 
+void
+bz_flathub_state_set_entries (BzFlathubState *self,
+                              GListModel     *entries);
+
 const char *
 bz_flathub_state_get_for_day (BzFlathubState *self);
 
