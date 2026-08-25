@@ -26,26 +26,9 @@
 #include "bz-auth-state.h"
 #include "bz-flathub-auth-provider.h"
 #include "bz-login-page.h"
-#include "config.h"
 #include "global-net.h"
 #include "template-callbacks.h"
 #include "util.h"
-
-#define DEFAULT_FLATHUB_LOGIN_URL "https://flathub.org"
-
-static char *
-get_flathub_login_base (void)
-{
-  g_autoptr (GSettings) settings = NULL;
-  g_autofree char *configured    = NULL;
-
-  settings  = g_settings_new (APPLICATION_ID);
-  configured = g_settings_get_string (settings, "flathub-login-url");
-  if (configured == NULL || configured[0] == '\0')
-    return g_strdup (DEFAULT_FLATHUB_LOGIN_URL);
-
-  return g_steal_pointer (&configured);
-}
 
 struct _BzLoginPage
 {
@@ -145,11 +128,11 @@ static SoupMessage *
 create_flathub_request (const char *method,
                         const char *route)
 {
-  g_autofree char *base       = NULL;
+  const char      *base       = NULL;
   g_autofree char *url        = NULL;
   g_autoptr (SoupMessage) msg = NULL;
 
-  base = get_flathub_login_base ();
+  base = bz_get_flathub_login_base ();
   url  = g_strdup_printf ("%s/api/v2%s", base, route);
   msg  = soup_message_new (method, url);
 
@@ -198,7 +181,7 @@ complete_oauth (BzLoginPage *self,
 {
   g_autoptr (JsonBuilder) builder     = NULL;
   g_autoptr (JsonGenerator) generator = NULL;
-  g_autofree char *base                = NULL;
+  const char      *base               = NULL;
   g_autofree char *route              = NULL;
   g_autofree char *json_data          = NULL;
   g_autoptr (SoupMessage) msg         = NULL;
@@ -230,7 +213,7 @@ complete_oauth (BzLoginPage *self,
   route = g_strdup_printf ("/auth/login/%s",
                            bz_flathub_auth_provider_get_method (self->current_provider));
 
-  base = get_flathub_login_base ();
+  base = bz_get_flathub_login_base ();
   msg  = soup_message_new ("POST", g_strdup_printf ("%s/api/v2%s", base, route));
   soup_message_headers_append (soup_message_get_request_headers (msg),
                                "accept", "application/json");
@@ -273,7 +256,7 @@ on_decide_policy (BzLoginPage             *self,
     return FALSE;
 
   {
-    g_autofree char *login_base = get_flathub_login_base ();
+    const char      *login_base = bz_get_flathub_login_base ();
     g_autoptr (GUri) base_uri   = g_uri_parse (login_base, G_URI_FLAGS_NONE, NULL);
     const char      *host       = base_uri != NULL ? g_uri_get_host (base_uri) : NULL;
 

@@ -44,6 +44,17 @@ bz_metadata_fetching_enabled (void);
 gboolean
 bz_flathub_login_hidden (void);
 
+const char *
+bz_get_flathub_login_base (void);
+
+void
+bz_set_metadata_config (const char *api_url,
+                        gboolean    disable_fetching);
+
+void
+bz_set_flathub_login_config (const char *login_url,
+                             gboolean    hidden);
+
 DexFuture *
 bz_query_flathub_v2_json (const char *request);
 

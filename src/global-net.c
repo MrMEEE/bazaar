@@ -31,43 +31,62 @@
 #include "util.h"
 
 #define DEFAULT_METADATA_API_URL "https://flathub.org/api/v2"
+#define DEFAULT_FLATHUB_LOGIN_URL "https://flathub.org"
 
-static GSettings *
-get_net_settings (void)
+/* Populated once at startup from the admin-controlled main config file (see
+ * bz-main-config.h); there is no GSettings equivalent for these by design. */
+static char    *metadata_api_url_override = NULL;
+static gboolean  metadata_fetching_disabled = FALSE;
+static char    *flathub_login_url_override = NULL;
+static gboolean  flathub_login_is_hidden    = FALSE;
+
+void
+bz_set_metadata_config (const char *api_url,
+                        gboolean    disable_fetching)
 {
-  static GSettings *settings = NULL;
+  g_clear_pointer (&metadata_api_url_override, g_free);
+  if (api_url != NULL && api_url[0] != '\0')
+    metadata_api_url_override = g_strdup (api_url);
+  metadata_fetching_disabled = disable_fetching;
+}
 
-  if (g_once_init_enter_pointer (&settings))
-    {
-      GSettings *instance = g_settings_new (APPLICATION_ID);
-      g_once_init_leave_pointer (&settings, instance);
-    }
-
-  return settings;
+void
+bz_set_flathub_login_config (const char *login_url,
+                             gboolean    hidden)
+{
+  g_clear_pointer (&flathub_login_url_override, g_free);
+  if (login_url != NULL && login_url[0] != '\0')
+    flathub_login_url_override = g_strdup (login_url);
+  flathub_login_is_hidden = hidden;
 }
 
 gboolean
 bz_metadata_fetching_enabled (void)
 {
-  return !g_settings_get_boolean (get_net_settings (), "disable-metadata-fetching");
+  return !metadata_fetching_disabled;
 }
 
 gboolean
 bz_flathub_login_hidden (void)
 {
-  return g_settings_get_boolean (get_net_settings (), "hide-flathub-login");
+  return flathub_login_is_hidden;
+}
+
+const char *
+bz_get_flathub_login_base (void)
+{
+  return flathub_login_url_override != NULL
+      ? flathub_login_url_override
+      : DEFAULT_FLATHUB_LOGIN_URL;
 }
 
 static char *
 get_metadata_api_base (void)
 {
-  g_autofree char *configured = NULL;
+  if (metadata_api_url_override != NULL)
+    return g_strdup (metadata_api_url_override);
 
-  configured = g_settings_get_string (get_net_settings (), "metadata-api-url");
-  if (configured == NULL || configured[0] == '\0')
-    return g_strdup (DEFAULT_METADATA_API_URL);
-
-  return g_steal_pointer (&configured);
+  return g_strdup (DEFAULT_METADATA_API_URL);
 }
 
 BZ_DEFINE_DATA (

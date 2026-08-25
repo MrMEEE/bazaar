@@ -68,6 +68,7 @@
 #include "dex-utils.h"
 #include "env.h"
 #include "error.h"
+#include "global-net.h"
 #include "io.h"
 #include "progress-bar-designs/common.h"
 #include "search-index-write.h"
@@ -279,11 +280,6 @@ static void
 show_hide_app_setting_changed (BzApplication *self,
                                const char    *key,
                                GSettings     *settings);
-
-static void
-metadata_setting_changed (BzApplication *self,
-                          const char    *key,
-                          GSettings     *settings);
 
 static void
 update_flathub_login_action_enabled (BzApplication *self);
@@ -807,7 +803,7 @@ bz_application_flathub_login_action (GSimpleAction *action,
 
   g_assert (BZ_IS_APPLICATION (self));
 
-  if (g_settings_get_boolean (self->settings, "hide-flathub-login"))
+  if (bz_flathub_login_hidden ())
     return;
 
   window = gtk_application_get_active_window (GTK_APPLICATION (self));
@@ -2352,9 +2348,6 @@ init_fiber_finally (DexFuture *future,
       g_signal_connect_swapped (
           bz_state_info_get_auth_state (self->state), "notify::authenticated",
           G_CALLBACK (update_flathub_login_action_enabled), self);
-      g_signal_connect_swapped (
-          self->settings, "changed::hide-flathub-login",
-          G_CALLBACK (update_flathub_login_action_enabled), self);
     }
   else
     {
@@ -2997,18 +2990,6 @@ show_hide_app_setting_changed (BzApplication *self,
 }
 
 static void
-metadata_setting_changed (BzApplication *self,
-                         const char    *key,
-                         GSettings     *settings)
-{
-  if (self->flathub == NULL)
-    return;
-
-  bz_flathub_state_set_entries (self->flathub, G_LIST_MODEL (self->groups));
-  dex_future_disown (bz_flathub_state_update_to_today (self->flathub));
-}
-
-static void
 update_flathub_login_action_enabled (BzApplication *self)
 {
   gboolean       authenticated = FALSE;
@@ -3016,7 +2997,7 @@ update_flathub_login_action_enabled (BzApplication *self)
   GSimpleAction *action        = NULL;
 
   authenticated = bz_auth_state_is_authenticated (bz_state_info_get_auth_state (self->state));
-  hidden        = g_settings_get_boolean (self->settings, "hide-flathub-login");
+  hidden        = bz_flathub_login_hidden ();
 
   action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (self), "flathub-login"));
   g_simple_action_set_enabled (action, !authenticated && !hidden);
@@ -3408,6 +3389,13 @@ init_service_struct (BzApplication *self,
 
           self->config = g_value_dup_object (g_hash_table_lookup (parse_results, "/"));
 
+          bz_set_metadata_config (
+              bz_main_config_get_metadata_api_url (self->config),
+              bz_main_config_get_disable_metadata_fetching (self->config));
+          bz_set_flathub_login_config (
+              bz_main_config_get_flathub_login_url (self->config),
+              bz_main_config_get_hide_flathub_login (self->config));
+
           override_eol_markings = bz_main_config_get_override_eol_markings (self->config);
           if (override_eol_markings != NULL)
             {
@@ -3665,17 +3653,6 @@ init_service_struct (BzApplication *self,
       self->settings,
       "changed::show-only-verified",
       G_CALLBACK (show_hide_app_setting_changed),
-      self);
-
-  g_signal_connect_swapped (
-      self->settings,
-      "changed::disable-metadata-fetching",
-      G_CALLBACK (metadata_setting_changed),
-      self);
-  g_signal_connect_swapped (
-      self->settings,
-      "changed::metadata-api-url",
-      G_CALLBACK (metadata_setting_changed),
       self);
 
   self->blocklist_regexes = g_ptr_array_new_with_free_func (

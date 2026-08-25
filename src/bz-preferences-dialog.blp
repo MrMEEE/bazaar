@@ -100,45 +100,6 @@ template $BzPreferencesDialog: Adw.PreferencesDialog {
     }
 
     Adw.PreferencesGroup {
-      title: _("Flathub Metadata");
-      description: _("Controls where supplemental app metadata (curated picks, categories, stats, favorites) is fetched from");
-
-      Adw.SwitchRow disable_metadata_switch {
-        title: _("_Disable Metadata Fetching");
-        subtitle: _("Only use data from enabled Flatpak remotes; do not contact any metadata API");
-        use-underline: true;
-      }
-
-      Adw.EntryRow metadata_api_url_entry {
-        title: _("Metadata API URL");
-        sensitive: bind disable_metadata_switch.active inverted;
-      }
-    }
-
-    Adw.PreferencesGroup {
-      title: _("Flathub Login");
-
-      Adw.SwitchRow hide_login_switch {
-        title: _("_Hide Flathub Login");
-        subtitle: _("Remove the ability to log in to Flathub and manage favorites");
-        use-underline: true;
-      }
-
-      Adw.EntryRow login_url_entry {
-        title: _("Login URL");
-        sensitive: bind hide_login_switch.active inverted;
-      }
-    }
-
-    Adw.PreferencesGroup {
-      title: _("Explore Tab");
-
-      Adw.EntryRow tab_title_entry {
-        title: _("Tab Name");
-      }
-    }
-
-    Adw.PreferencesGroup {
       title: _("Progress Bar Theme");
 
       Adw.ActionRow {
