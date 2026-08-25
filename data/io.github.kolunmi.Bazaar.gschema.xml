@@ -119,5 +119,10 @@
       <summary>Hide Flathub Login</summary>
       <description>Hide the ability to log in to Flathub, including favorites-related functionality</description>
     </key>
+    <key name="flathub-tab-title" type="s">
+      <default>'Explore'</default>
+      <summary>Explore Tab Title</summary>
+      <description>The name shown on the tab which displays curated and categorized Flathub content</description>
+    </key>
   </schema>
 </schemalist>

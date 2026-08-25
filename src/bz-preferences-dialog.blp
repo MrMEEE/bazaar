@@ -131,6 +131,14 @@ template $BzPreferencesDialog: Adw.PreferencesDialog {
     }
 
     Adw.PreferencesGroup {
+      title: _("Explore Tab");
+
+      Adw.EntryRow tab_title_entry {
+        title: _("Tab Name");
+      }
+    }
+
+    Adw.PreferencesGroup {
       title: _("Progress Bar Theme");
 
       Adw.ActionRow {

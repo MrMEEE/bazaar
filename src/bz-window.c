@@ -67,6 +67,7 @@ struct _BzWindow
   BzLibraryPage     *library_page;
   AdwToastOverlay   *toasts;
   AdwViewStack      *main_view_stack;
+  AdwViewStackPage  *flathub_view_page;
   GtkStack          *main_stack;
   GtkOverlay        *window_overlay;
   GtkDropTarget     *drop_target;
@@ -804,6 +805,7 @@ bz_window_class_init (BzWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, BzWindow, search_page);
   gtk_widget_class_bind_template_child (widget_class, BzWindow, library_page);
   gtk_widget_class_bind_template_child (widget_class, BzWindow, main_view_stack);
+  gtk_widget_class_bind_template_child (widget_class, BzWindow, flathub_view_page);
   gtk_widget_class_bind_template_child (widget_class, BzWindow, main_stack);
   gtk_widget_class_bind_template_child (widget_class, BzWindow, window_overlay);
   gtk_widget_class_bind_template_child (widget_class, BzWindow, drop_target);
@@ -1078,6 +1080,15 @@ bz_window_new (BzStateInfo *state)
 
   window        = g_object_new (BZ_TYPE_WINDOW, NULL);
   window->state = g_object_ref (state);
+
+  {
+    GSettings *settings = bz_state_info_get_settings (state);
+
+    if (settings != NULL)
+      g_settings_bind (settings, "flathub-tab-title",
+                       window->flathub_view_page, "title",
+                       G_SETTINGS_BIND_GET);
+  }
 
   config = bz_state_info_get_main_config (state);
   if (config != NULL && bz_main_config_get_start_on_curated (config))
