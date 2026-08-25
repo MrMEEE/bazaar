@@ -41,6 +41,9 @@ bz_https_query_json (const char *uri);
 gboolean
 bz_metadata_fetching_enabled (void);
 
+gboolean
+bz_flathub_login_hidden (void);
+
 DexFuture *
 bz_query_flathub_v2_json (const char *request);
 

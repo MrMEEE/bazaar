@@ -62,7 +62,7 @@ from **Preferences**.
 | `metadata-api-url` | string | `https://flathub.org/api/v2` | Base URL for the metadata API. Empty string resets to the default. |
 | `disable-metadata-fetching` | bool | `false` | When `true`, Bazaar never contacts the metadata API. Apps/search still come from enabled Flatpak remotes. |
 | `flathub-login-url` | string | `https://flathub.org` | Base URL for the OAuth login flow and userinfo/favorites requests. |
-| `hide-flathub-login` | bool | `false` | Hides/disables the "Login With Flathub" menu item and favorite-button login prompt. |
+| `hide-flathub-login` | bool | `false` | Hides/disables the "Login With Flathub" menu item and favorite-button login prompt, and blocks all authenticated (user-specific) Flathub requests (favorites, etc.). |
 | `flathub-tab-title` | string | `Explore` | Label shown on the tab that displays curated/categorized Flathub content. |
 
 ## Behavior changes
@@ -86,7 +86,11 @@ from **Preferences**.
   WebView navigation-policy host check) now target `flathub-login-url`. The
   `app.flathub-login` action's enabled state is recomputed from both
   authentication status and `hide-flathub-login`, which also hides the
-  corresponding menu item (`hidden-when: "action-disabled"`).
+  corresponding menu item (`hidden-when: "action-disabled"`). When
+  `hide-flathub-login` is `true`, `global-net.c` also rejects every
+  authenticated (token-bearing) Flathub request — favorites list/add/remove/
+  count — so no user-specific data is fetched even if a login session/token
+  is already stored from before the setting was enabled.
 - **Renameable tab** (`bz-window.c`/`bz-window.blp`): the Explore tab's
   `AdwViewStackPage` (`flathub_view_page`) has its `title` bound one-way to
   `flathub-tab-title` in `bz_window_new()`.

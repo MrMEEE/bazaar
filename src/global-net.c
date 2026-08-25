@@ -52,6 +52,12 @@ bz_metadata_fetching_enabled (void)
   return !g_settings_get_boolean (get_net_settings (), "disable-metadata-fetching");
 }
 
+gboolean
+bz_flathub_login_hidden (void)
+{
+  return g_settings_get_boolean (get_net_settings (), "hide-flathub-login");
+}
+
 static char *
 get_metadata_api_base (void)
 {
@@ -211,6 +217,11 @@ bz_query_flathub_v2_json_authenticated (const char *request,
         G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
         "Metadata fetching has been disabled in preferences");
 
+  if (bz_flathub_login_hidden ())
+    return dex_future_new_reject (
+        G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+        "Flathub login has been hidden in preferences");
+
   base = get_metadata_api_base ();
   uri  = g_strdup_printf ("%s%s", base, request);
   return query_uri_json_with_method (uri, SOUP_METHOD_GET, token);
@@ -230,6 +241,11 @@ bz_query_flathub_v2_json_authenticated_post (const char *request,
         G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
         "Metadata fetching has been disabled in preferences");
 
+  if (bz_flathub_login_hidden ())
+    return dex_future_new_reject (
+        G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+        "Flathub login has been hidden in preferences");
+
   base = get_metadata_api_base ();
   uri  = g_strdup_printf ("%s%s", base, request);
   return query_uri_json_with_method (uri, SOUP_METHOD_POST, token);
@@ -248,6 +264,11 @@ bz_query_flathub_v2_json_authenticated_delete (const char *request,
     return dex_future_new_reject (
         G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
         "Metadata fetching has been disabled in preferences");
+
+  if (bz_flathub_login_hidden ())
+    return dex_future_new_reject (
+        G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+        "Flathub login has been hidden in preferences");
 
   base = get_metadata_api_base ();
   uri  = g_strdup_printf ("%s%s", base, request);
