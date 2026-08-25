@@ -1168,13 +1168,16 @@ init_fiber (BzWeakRef *wr)
   bz_transaction_manager_set_backend (self->transactions, BZ_BACKEND (self->flatpak));
   bz_state_info_set_backend (self->state, BZ_BACKEND (self->flatpak));
 
-  has_flathub = dex_await_boolean (
-      bz_flatpak_instance_has_flathub (self->flatpak, NULL),
-      &local_error);
+  has_flathub = self->config != NULL && bz_main_config_get_disable_flathub (self->config)
+      ? FALSE
+      : dex_await_boolean (
+            bz_flatpak_instance_has_flathub (self->flatpak, NULL),
+            &local_error);
   if (local_error != NULL)
     return dex_future_new_for_error (g_steal_pointer (&local_error));
 
-  if (!has_flathub)
+  if (!has_flathub &&
+      (self->config == NULL || !bz_main_config_get_disable_flathub (self->config)))
     {
       GtkWindow       *window   = NULL;
       g_autofree char *response = NULL;
@@ -3409,10 +3412,12 @@ init_service_struct (BzApplication *self,
 
           bz_set_metadata_config (
               bz_main_config_get_metadata_api_url (self->config),
-              bz_main_config_get_disable_metadata_fetching (self->config));
+              bz_main_config_get_disable_metadata_fetching (self->config) ||
+                  bz_main_config_get_disable_flathub (self->config));
           bz_set_flathub_login_config (
               bz_main_config_get_flathub_login_url (self->config),
-              bz_main_config_get_hide_flathub_login (self->config));
+              bz_main_config_get_hide_flathub_login (self->config) ||
+                  bz_main_config_get_disable_flathub (self->config));
 
           override_eol_markings = bz_main_config_get_override_eol_markings (self->config);
           if (override_eol_markings != NULL)

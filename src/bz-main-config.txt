@@ -34,3 +34,4 @@ property=disable_metadata_fetching gboolean G_TYPE_BOOLEAN boolean
 property=flathub_login_url char G_TYPE_STRING string
 property=hide_flathub_login gboolean G_TYPE_BOOLEAN boolean
 property=flathub_tab_title char G_TYPE_STRING string
+property=disable_flathub gboolean G_TYPE_BOOLEAN boolean
