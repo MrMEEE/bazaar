@@ -67,6 +67,7 @@ struct _BzWindow
   BzLibraryPage     *library_page;
   AdwToastOverlay   *toasts;
   AdwViewStack      *main_view_stack;
+  AdwViewStackPage  *flathub_view_page;
   GtkStack          *main_stack;
   GtkOverlay        *window_overlay;
   GtkDropTarget     *drop_target;
@@ -804,6 +805,7 @@ bz_window_class_init (BzWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, BzWindow, search_page);
   gtk_widget_class_bind_template_child (widget_class, BzWindow, library_page);
   gtk_widget_class_bind_template_child (widget_class, BzWindow, main_view_stack);
+  gtk_widget_class_bind_template_child (widget_class, BzWindow, flathub_view_page);
   gtk_widget_class_bind_template_child (widget_class, BzWindow, main_stack);
   gtk_widget_class_bind_template_child (widget_class, BzWindow, window_overlay);
   gtk_widget_class_bind_template_child (widget_class, BzWindow, drop_target);
@@ -1080,6 +1082,15 @@ bz_window_new (BzStateInfo *state)
   window->state = g_object_ref (state);
 
   config = bz_state_info_get_main_config (state);
+  if (config != NULL)
+    {
+      const char *tab_title = NULL;
+
+      tab_title = bz_main_config_get_flathub_tab_title (config);
+      if (tab_title != NULL && tab_title[0] != '\0')
+        adw_view_stack_page_set_title (window->flathub_view_page, tab_title);
+    }
+
   if (config != NULL && bz_main_config_get_start_on_curated (config))
     {
       BzContentProvider *curated_provider = NULL;

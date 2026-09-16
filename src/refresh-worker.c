@@ -25,6 +25,7 @@
 #include "bz-entry-cache-manager.h"
 #include "bz-flatpak-instance.h"
 #include "env.h"
+#include "io.h"
 #include "util.h"
 
 #include "refresh-worker.h"
@@ -77,7 +78,10 @@ run (MainData *data)
   g_autoptr (DexFuture) all_notifs      = NULL;
   guint n_notifs                        = 0;
   g_autoptr (GPtrArray) write_backs     = NULL;
+  g_autofree char *entry_cache         = NULL;
 
+  entry_cache = bz_dup_cache_dir ("entry-cache");
+  bz_discard_path (entry_cache);
   cache = bz_entry_cache_manager_new ();
 
   flatpak = dex_await_object (

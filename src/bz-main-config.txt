@@ -28,3 +28,10 @@ property=search_biases GListModel G_TYPE_LIST_MODEL object
 
 property=start_on_curated gboolean G_TYPE_BOOLEAN boolean
 property=hide_auto_update_options gboolean G_TYPE_BOOLEAN boolean
+
+property=metadata_api_url char G_TYPE_STRING string
+property=disable_metadata_fetching gboolean G_TYPE_BOOLEAN boolean
+property=flathub_login_url char G_TYPE_STRING string
+property=hide_flathub_login gboolean G_TYPE_BOOLEAN boolean
+property=flathub_tab_title char G_TYPE_STRING string
+property=disable_flathub gboolean G_TYPE_BOOLEAN boolean

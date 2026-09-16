@@ -28,6 +28,7 @@
 #include <json-glib/json-glib.h>
 #include <libdex.h>
 
+#include "bz-entry-group.h"
 #include "bz-flathub-category.h"
 #include "bz-flathub-curated-selection.h"
 #include "bz-flathub-state.h"
@@ -47,6 +48,8 @@ struct _BzFlathubState
   GtkStringList           *apps_of_the_week;
   GListStore              *categories;
   GListStore              *curated_selections;
+  GListModel              *entries_source;
+  gboolean                 has_connection_error;
 
   DexFuture *initializing;
 };
@@ -80,6 +83,7 @@ enum
   PROP_APPS_OF_THE_DAY_WEEK,
   PROP_CATEGORIES,
   PROP_CURATED_SELECTIONS,
+  PROP_HAS_CONNECTION_ERROR,
 
   LAST_PROP
 };
@@ -98,12 +102,16 @@ static void
 clear (BzFlathubState *self);
 
 static void
+populate_categories_from_entries (BzFlathubState *self);
+
+static void
 bz_flathub_state_dispose (GObject *object)
 {
   BzFlathubState *self = BZ_FLATHUB_STATE (object);
 
   dex_clear (&self->initializing);
   g_clear_pointer (&self->map_factory, g_object_unref);
+  g_clear_object (&self->entries_source);
   clear (self);
 
   G_OBJECT_CLASS (bz_flathub_state_parent_class)->dispose (object);
@@ -140,6 +148,9 @@ bz_flathub_state_get_property (GObject    *object,
     case PROP_CURATED_SELECTIONS:
       g_value_set_object (value, bz_flathub_state_get_curated_selections (self));
       break;
+    case PROP_HAS_CONNECTION_ERROR:
+      g_value_set_boolean (value, bz_flathub_state_get_has_connection_error (self));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -166,6 +177,7 @@ bz_flathub_state_set_property (GObject      *object,
     case PROP_APPS_OF_THE_DAY_WEEK:
     case PROP_CATEGORIES:
     case PROP_CURATED_SELECTIONS:
+    case PROP_HAS_CONNECTION_ERROR:
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -225,6 +237,13 @@ bz_flathub_state_class_init (BzFlathubStateClass *klass)
           "curated-selections",
           NULL, NULL,
           G_TYPE_LIST_MODEL,
+          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
+
+  props[PROP_HAS_CONNECTION_ERROR] =
+      g_param_spec_boolean (
+          "has-connection-error",
+          NULL, NULL,
+          FALSE,
           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (object_class, LAST_PROP, props);
@@ -865,6 +884,13 @@ initialize_fiber (GWeakRef *wr)
 
   bz_weak_get_or_return_reject (self, wr);
 
+  if (!bz_metadata_fetching_enabled ())
+    {
+      g_debug ("Metadata fetching is disabled; populating flathub tab from local remotes");
+      populate_categories_from_entries (self);
+      return dex_future_new_true ();
+    }
+
   quality_set = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
 #define ADD_REQUEST(_var, ...)                                                         \
@@ -877,7 +903,7 @@ initialize_fiber (GWeakRef *wr)
     if (!dex_await (dex_ref ((_var)), &local_error))                                   \
       {                                                                                \
         g_warning ("Failed to complete request to flathub: %s", local_error->message); \
-        return dex_future_new_for_error (g_steal_pointer (&local_error));              \
+        goto fallback;                                                                \
       }                                                                                \
   }                                                                                    \
   G_STMT_END
@@ -1025,6 +1051,12 @@ initialize_fiber (GWeakRef *wr)
     add_category (self, "adwaita", GET_BOXED (adwaita_f), quality_set, TRUE, QUALITY_MODE_RANDOM, FALSE);
 
   return dex_future_new_true ();
+
+fallback:
+  g_clear_error (&local_error);
+  self->has_connection_error = TRUE;
+  populate_categories_from_entries (self);
+  return dex_future_new_true ();
 }
 
 static DexFuture *
@@ -1171,6 +1203,92 @@ clear (BzFlathubState *self)
   g_clear_pointer (&self->apps_of_the_week, g_object_unref);
   g_clear_pointer (&self->categories, g_object_unref);
   g_clear_pointer (&self->curated_selections, g_object_unref);
+  self->has_connection_error = FALSE;
+}
+
+void
+bz_flathub_state_set_entries (BzFlathubState *self,
+                              GListModel     *entries)
+{
+  g_return_if_fail (BZ_IS_FLATHUB_STATE (self));
+  g_return_if_fail (entries == NULL || G_IS_LIST_MODEL (entries));
+
+  g_set_object (&self->entries_source, entries);
+}
+
+gboolean
+bz_flathub_state_get_has_connection_error (BzFlathubState *self)
+{
+  g_return_val_if_fail (BZ_IS_FLATHUB_STATE (self), FALSE);
+  return self->has_connection_error;
+}
+
+static const struct
+{
+  const char     *name;
+  BzCategoryFlags flag;
+} local_category_map[] = {
+  {  "audiovideo",  BZ_CATEGORY_FLAGS_AUDIOVIDEO },
+  { "development", BZ_CATEGORY_FLAGS_DEVELOPMENT },
+  {   "education",   BZ_CATEGORY_FLAGS_EDUCATION },
+  {        "game",        BZ_CATEGORY_FLAGS_GAME },
+  {    "graphics",    BZ_CATEGORY_FLAGS_GRAPHICS },
+  {     "network",     BZ_CATEGORY_FLAGS_NETWORK },
+  {      "office",      BZ_CATEGORY_FLAGS_OFFICE },
+  {     "science",     BZ_CATEGORY_FLAGS_SCIENCE },
+  {      "system",      BZ_CATEGORY_FLAGS_SYSTEM },
+  {     "utility",     BZ_CATEGORY_FLAGS_UTILITY },
+};
+
+/* Builds the category listing directly from locally known app entries
+ * (i.e. what is already available from enabled Flatpak remotes), used
+ * whenever the metadata API is disabled or unreachable. */
+static void
+populate_categories_from_entries (BzFlathubState *self)
+{
+  guint n_entries = 0;
+
+  if (self->entries_source == NULL)
+    return;
+
+  n_entries = g_list_model_get_n_items (self->entries_source);
+
+  for (guint c = 0; c < G_N_ELEMENTS (local_category_map); c++)
+    {
+      g_autoptr (GtkStringList) store = NULL;
+      BzFlathubCategory *category      = NULL;
+      guint              total         = 0;
+
+      store = gtk_string_list_new (NULL);
+
+      for (guint i = 0; i < n_entries; i++)
+        {
+          g_autoptr (BzEntryGroup) group = NULL;
+          const char *id                  = NULL;
+
+          group = g_list_model_get_item (self->entries_source, i);
+          id    = bz_entry_group_get_id (group);
+          if (id == NULL)
+            continue;
+
+          if (bz_entry_group_get_categories (group) & local_category_map[c].flag)
+            {
+              gtk_string_list_append (store, id);
+              total++;
+            }
+        }
+
+      if (total == 0)
+        continue;
+
+      category = bz_flathub_category_new ();
+      bz_flathub_category_set_name (category, local_category_map[c].name);
+      bz_flathub_category_set_applications (category, G_LIST_MODEL (store));
+      bz_flathub_category_set_total_entries (category, (int) total);
+      g_object_bind_property (self, "map-factory", category, "map-factory", G_BINDING_SYNC_CREATE);
+      g_list_store_append (self->categories, category);
+      g_object_unref (category);
+    }
 }
 
 /* End of bz-flathub-state.c */

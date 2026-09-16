@@ -68,6 +68,7 @@
 #include "dex-utils.h"
 #include "env.h"
 #include "error.h"
+#include "global-net.h"
 #include "io.h"
 #include "progress-bar-designs/common.h"
 #include "search-index-write.h"
@@ -221,6 +222,10 @@ flathub_update_finally (DexFuture *future,
                         BzWeakRef *wr);
 
 static DexFuture *
+start_flathub_sync_after_backend (DexFuture *future,
+                                  BzWeakRef *wr);
+
+static DexFuture *
 cache_write_back_finally (DexFuture *future,
                           BzWeakRef *wr,
                           GPtrArray *notify_groups,
@@ -279,6 +284,9 @@ static void
 show_hide_app_setting_changed (BzApplication *self,
                                const char    *key,
                                GSettings     *settings);
+
+static void
+update_flathub_login_action_enabled (BzApplication *self);
 
 static gboolean
 window_close_request (BzApplication *self,
@@ -799,6 +807,9 @@ bz_application_flathub_login_action (GSimpleAction *action,
 
   g_assert (BZ_IS_APPLICATION (self));
 
+  if (bz_flathub_login_hidden ())
+    return;
+
   window = gtk_application_get_active_window (GTK_APPLICATION (self));
 
   auth_state = bz_state_info_get_auth_state (self->state);
@@ -1157,13 +1168,16 @@ init_fiber (BzWeakRef *wr)
   bz_transaction_manager_set_backend (self->transactions, BZ_BACKEND (self->flatpak));
   bz_state_info_set_backend (self->state, BZ_BACKEND (self->flatpak));
 
-  has_flathub = dex_await_boolean (
-      bz_flatpak_instance_has_flathub (self->flatpak, NULL),
-      &local_error);
+  has_flathub = self->config != NULL && bz_main_config_get_disable_flathub (self->config)
+      ? FALSE
+      : dex_await_boolean (
+            bz_flatpak_instance_has_flathub (self->flatpak, NULL),
+            &local_error);
   if (local_error != NULL)
     return dex_future_new_for_error (g_steal_pointer (&local_error));
 
-  if (!has_flathub)
+  if (!has_flathub &&
+      (self->config == NULL || !bz_main_config_get_disable_flathub (self->config)))
     {
       GtkWindow       *window   = NULL;
       g_autofree char *response = NULL;
@@ -2337,10 +2351,10 @@ init_fiber_finally (DexFuture *future,
 
       bz_malcontent_service_start (self->malcontent);
 
-      g_object_bind_property (
-          bz_state_info_get_auth_state (self->state), "authenticated",
-          g_action_map_lookup_action (G_ACTION_MAP (self), "flathub-login"), "enabled",
-          G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
+      update_flathub_login_action_enabled (self);
+      g_signal_connect_swapped (
+          bz_state_info_get_auth_state (self->state), "notify::authenticated",
+          G_CALLBACK (update_flathub_login_action_enabled), self);
     }
   else
     {
@@ -2398,6 +2412,10 @@ backend_sync_finally (DexFuture *future,
     {
       g_autoptr (DexFuture) enum_future = NULL;
 
+      g_list_store_remove_all (self->groups);
+      g_list_store_remove_all (self->installed_apps);
+      g_hash_table_remove_all (self->ids_to_groups);
+
       enum_future = dex_scheduler_spawn (
           dex_scheduler_get_default (),
           bz_get_dex_stack_size (),
@@ -2431,6 +2449,20 @@ backend_sync_save_groups_finally (DexFuture *future,
       (DexFiberFunc) cache_groups_fiber,
       bz_weak_ref_ref (wr),
       (GDestroyNotify) bz_weak_ref_unref);
+}
+
+static DexFuture *
+start_flathub_sync_after_backend (DexFuture *future,
+                                  BzWeakRef *wr)
+{
+  g_autoptr (BzApplication) self = NULL;
+
+  bz_weak_get_or_return_reject (self, &wr->ref);
+
+  /* self->groups is only fully populated once the backend refresh
+   * subprocess finishes, so the local-remote fallback must wait for it. */
+  bz_flathub_state_set_entries (self->tmp_flathub, G_LIST_MODEL (self->groups));
+  return bz_flathub_state_update_to_today (self->tmp_flathub);
 }
 
 static DexFuture *
@@ -2982,6 +3014,20 @@ show_hide_app_setting_changed (BzApplication *self,
   g_object_thaw_notify (G_OBJECT (self->state));
 }
 
+static void
+update_flathub_login_action_enabled (BzApplication *self)
+{
+  gboolean       authenticated = FALSE;
+  gboolean       hidden        = FALSE;
+  GSimpleAction *action        = NULL;
+
+  authenticated = bz_auth_state_is_authenticated (bz_state_info_get_auth_state (self->state));
+  hidden        = bz_flathub_login_hidden ();
+
+  action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (self), "flathub-login"));
+  g_simple_action_set_enabled (action, !authenticated && !hidden);
+}
+
 static gboolean
 window_close_request (BzApplication *self,
                       GtkWidget     *window)
@@ -3367,6 +3413,14 @@ init_service_struct (BzApplication *self,
           GListModel *override_eol_markings = NULL;
 
           self->config = g_value_dup_object (g_hash_table_lookup (parse_results, "/"));
+
+          bz_set_metadata_config (
+              bz_main_config_get_metadata_api_url (self->config),
+              bz_main_config_get_disable_metadata_fetching (self->config));
+          bz_set_flathub_login_config (
+              bz_main_config_get_flathub_login_url (self->config),
+              bz_main_config_get_hide_flathub_login (self->config) ||
+                  bz_main_config_get_disable_flathub (self->config));
 
           override_eol_markings = bz_main_config_get_override_eol_markings (self->config);
           if (override_eol_markings != NULL)
@@ -4220,7 +4274,11 @@ make_sync_future (BzApplication *self)
 
   g_clear_object (&self->tmp_flathub);
   self->tmp_flathub = bz_flathub_state_new ();
-  flathub_future    = bz_flathub_state_update_to_today (self->tmp_flathub);
+  flathub_future    = dex_future_finally (
+      dex_ref (backend_future),
+      (DexFutureCallback) start_flathub_sync_after_backend,
+      bz_weak_ref_new (self),
+      (GDestroyNotify) bz_weak_ref_unref);
   flathub_future    = dex_future_finally (
       flathub_future,
       (DexFutureCallback) flathub_update_finally,
