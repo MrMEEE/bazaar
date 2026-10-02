@@ -1873,11 +1873,7 @@ retrieve_refs_for_remote_fiber (RetrieveRefsForRemoteData *data)
   if (strstr (remote_name, "fedora") != NULL)
     is_noenumerate = TRUE;
 
-#ifdef SANDBOXED_LIBFLATPAK
-  if (is_noenumerate || installation == self->user)
-#else
   if (is_noenumerate)
-#endif
     ret = retrieve_refs_for_noenumerable_remote (
         self, data->parent->cancellable,
         remote_name, installation, remote);
